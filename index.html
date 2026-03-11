@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Calculadoras Fitness</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+font-family:Arial;
+background:#f4f4f4;
+padding:20px;
+max-width:800px;
+margin:auto;
+}
+
+h1{
+text-align:center;
+}
+
+.calculator{
+background:white;
+padding:20px;
+margin:20px 0;
+border-radius:10px;
+box-shadow:0 0 5px rgba(0,0,0,0.1);
+}
+
+input,select,button{
+width:100%;
+padding:10px;
+margin:5px 0;
+}
+
+.result{
+font-weight:bold;
+margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>Calculadoras Fitness</h1>
+
+<!-- IMC -->
+<div class="calculator">
+<h2>Calculadora IMC</h2>
+
+<input id="peso" placeholder="Peso (kg)">
+<input id="altura" placeholder="Altura (cm)">
+
+<button onclick="calcularIMC()">Calcular</button>
+
+<div class="result" id="resultadoIMC"></div>
+</div>
+
+
+<!-- CALORÍAS -->
+<div class="calculator">
+<h2>Calorías diarias (TDEE)</h2>
+
+<input id="peso2" placeholder="Peso kg">
+<input id="altura2" placeholder="Altura cm">
+<input id="edad" placeholder="Edad">
+
+<select id="sexo">
+<option value="5">Hombre</option>
+<option value="-161">Mujer</option>
+</select>
+
+<select id="actividad">
+<option value="1.2">Sedentario</option>
+<option value="1.37">Ligero</option>
+<option value="1.55">Moderado</option>
+<option value="1.72">Alto</option>
+<option value="1.9">Muy alto</option>
+</select>
+
+<button onclick="calcularCalorias()">Calcular</button>
+
+<div class="result" id="resultadoCalorias"></div>
+</div>
+
+
+<!-- PROTEINAS -->
+<div class="calculator">
+<h2>Proteínas recomendadas</h2>
+
+<input id="peso3" placeholder="Peso kg">
+
+<button onclick="calcularProteina()">Calcular</button>
+
+<div class="result" id="resultadoProteina"></div>
+</div>
+
+
+<!-- MACROS -->
+<div class="calculator">
+<h2>Macros recomendados</h2>
+
+<input id="caloriasMacros" placeholder="Calorías diarias">
+
+<button onclick="calcularMacros()">Calcular</button>
+
+<div class="result" id="resultadoMacros"></div>
+</div>
+
+
+<!-- ALTURA ADULTA -->
+<div class="calculator">
+<h2>Altura adulta estimada</h2>
+
+<input id="padre" placeholder="Altura padre (cm)">
+<input id="madre" placeholder="Altura madre (cm)">
+
+<select id="sexoHijo">
+<option value="6.5">Niño</option>
+<option value="-6.5">Niña</option>
+</select>
+
+<button onclick="alturaFutura()">Calcular</button>
+
+<div class="result" id="resultadoAltura"></div>
+</div>
+
+
+<!-- LIMITE NATURAL -->
+<div class="calculator">
+<h2>Límite muscular natural (FFMI)</h2>
+
+<input id="peso4" placeholder="Peso kg">
+<input id="altura4" placeholder="Altura cm">
+<input id="grasa" placeholder="% grasa corporal">
+
+<button onclick="calcularFFMI()">Calcular</button>
+
+<div class="result" id="resultadoFFMI"></div>
+</div>
+
+
+
+<script>
+
+function calcularIMC(){
+
+let peso=document.getElementById("peso").value;
+let altura=document.getElementById("altura").value/100;
+
+let imc=peso/(altura*altura);
+
+document.getElementById("resultadoIMC").innerHTML=
+"IMC: "+imc.toFixed(2);
+
+}
+
+
+function calcularCalorias(){
+
+let peso=document.getElementById("peso2").value;
+let altura=document.getElementById("altura2").value;
+let edad=document.getElementById("edad").value;
+let sexo=document.getElementById("sexo").value;
+let actividad=document.getElementById("actividad").value;
+
+let bmr=(10*peso)+(6.25*altura)-(5*edad)+parseInt(sexo);
+
+let tdee=bmr*actividad;
+
+document.getElementById("resultadoCalorias").innerHTML=
+"Calorías mantenimiento: "+Math.round(tdee);
+
+}
+
+
+function calcularProteina(){
+
+let peso=document.getElementById("peso3").value;
+
+let prote=peso*1.8;
+
+document.getElementById("resultadoProteina").innerHTML=
+"Proteína diaria aprox: "+prote+" g";
+
+}
+
+
+function calcularMacros(){
+
+let calorias=document.getElementById("caloriasMacros").value;
+
+let prote=(calorias*0.30)/4;
+let grasa=(calorias*0.25)/9;
+let carb=(calorias*0.45)/4;
+
+document.getElementById("resultadoMacros").innerHTML=
+
+"Proteínas: "+Math.round(prote)+" g<br>"+
+"Grasas: "+Math.round(grasa)+" g<br>"+
+"Carbohidratos: "+Math.round(carb)+" g";
+
+}
+
+
+function alturaFutura(){
+
+let padre=parseFloat(document.getElementById("padre").value);
+let madre=parseFloat(document.getElementById("madre").value);
+let sexo=parseFloat(document.getElementById("sexoHijo").value);
+
+let altura=((padre+madre+sexo)/2);
+
+document.getElementById("resultadoAltura").innerHTML=
+"Altura estimada: "+altura.toFixed(1)+" cm";
+
+}
+
+
+
+function calcularFFMI(){
+
+let peso=document.getElementById("peso4").value;
+let altura=document.getElementById("altura4").value/100;
+let grasa=document.getElementById("grasa").value;
+
+let masaMagra=peso*(1-grasa/100);
+
+let ffmi=masaMagra/(altura*altura);
+
+document.getElementById("resultadoFFMI").innerHTML=
+"FFMI: "+ffmi.toFixed(2)+" (25 suele ser el límite natural aproximado)";
+
+}
+
+</script>
+
+</body>
+</html>
