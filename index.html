@@ -1,8 +1,9 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Calculadoras Fitness</title>
+<title>Fitness Lab – Calculadoras de nutrición, entrenamiento y salud</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
@@ -10,16 +11,23 @@
 body{
 font-family:Arial, sans-serif;
 background:linear-gradient(135deg,#1e3c72,#2a5298);
+margin:0;
 padding:20px;
-max-width:1000px;
-margin:auto;
 color:#222;
+max-width:1100px;
+margin:auto;
 }
 
 h1{
 text-align:center;
 color:white;
-margin-bottom:20px;
+margin-bottom:10px;
+}
+
+.subtitle{
+text-align:center;
+color:#e5e5e5;
+margin-bottom:25px;
 }
 
 .menu{
@@ -37,7 +45,7 @@ border:none;
 padding:10px 16px;
 border-radius:8px;
 cursor:pointer;
-font-size:15px;
+font-size:14px;
 }
 
 .menu button:hover{
@@ -48,17 +56,16 @@ background:#2a5298;
 display:none;
 }
 
-.calculator{
+.card{
 background:white;
 padding:25px;
 margin:20px 0;
 border-radius:14px;
-box-shadow:0 5px 15px rgba(0,0,0,0.2);
+box-shadow:0 6px 18px rgba(0,0,0,0.25);
 }
 
 h2{
 margin-top:0;
-color:#111;
 }
 
 input,select{
@@ -68,7 +75,6 @@ margin:8px 0;
 border-radius:8px;
 border:1px solid #ccc;
 box-sizing:border-box;
-font-size:14px;
 }
 
 button.calc{
@@ -78,8 +84,8 @@ padding:12px;
 border:none;
 border-radius:8px;
 cursor:pointer;
-font-size:16px;
-margin-top:8px;
+font-size:15px;
+margin-top:6px;
 }
 
 button.calc:hover{
@@ -93,11 +99,12 @@ font-weight:bold;
 }
 
 .info{
-background:#f0f4ff;
-padding:15px;
+background:#f2f5ff;
+padding:16px;
 border-radius:10px;
-margin-top:15px;
+margin-top:14px;
 font-size:14px;
+line-height:1.5;
 }
 
 </style>
@@ -105,67 +112,69 @@ font-size:14px;
 
 <body>
 
-<h1>Calculadoras Fitness</h1>
+<h1>Fitness Lab</h1>
+<div class="subtitle">Calculadoras científicas de nutrición, salud y rendimiento</div>
 
 <nav class="menu">
 <button onclick="mostrar('inicio')">Inicio</button>
 <button onclick="mostrar('imc')">IMC</button>
 <button onclick="mostrar('calorias')">Calorías</button>
-<button onclick="mostrar('proteinas')">Proteínas</button>
+<button onclick="mostrar('proteina')">Proteína</button>
 <button onclick="mostrar('macros')">Macros</button>
-<button onclick="mostrar('altura_adulta')">Altura adulta</button>
-<button onclick="mostrar('ffmi')">Límite natural</button>
+<button onclick="mostrar('grasa')">Masa magra</button>
+<button onclick="mostrar('ffmi')">FFMI</button>
+<button onclick="mostrar('rm')">1RM</button>
+<button onclick="mostrar('agua')">Agua</button>
+<button onclick="mostrar('sueno')">Sueño</button>
 </nav>
 
-<div id="inicio" class="pagina calculator">
+<div id="inicio" class="pagina card">
 
-<h2>Bienvenido</h2>
-
-<p>
-Esta web reúne calculadoras populares usadas en fitness y nutrición.
-</p>
+<h2>Centro de cálculo fitness</h2>
 
 <div class="info">
-<p><b>Qué puedes calcular aquí:</b></p>
-<ul>
-<li>Índice de masa corporal (IMC)</li>
-<li>Calorías diarias estimadas (TDEE)</li>
-<li>Proteína recomendada</li>
-<li>Distribución de macronutrientes</li>
-<li>Altura adulta estimada</li>
-<li>Límite muscular natural (FFMI)</li>
-</ul>
+<p>
+Esta plataforma reúne múltiples calculadoras utilizadas en nutrición deportiva,
+entrenamiento de fuerza y análisis corporal. Muchas personas que empiezan a
+entrenar buscan respuestas rápidas: cuántas calorías comer, cuánta proteína
+ingerir o cuál podría ser su potencial natural de masa muscular.
+</p>
+
+<p>
+Las herramientas de esta página utilizan ecuaciones ampliamente empleadas
+en investigación nutricional y deportiva como la ecuación de Mifflin‑St Jeor
+para estimar el metabolismo basal.
+</p>
+
+<p>
+El objetivo es ofrecer herramientas educativas que ayuden a comprender
+mejor el funcionamiento del cuerpo humano durante el entrenamiento.
+</p>
 </div>
 
 </div>
 
+<div id="imc" class="pagina card">
 
-<div id="imc" class="pagina calculator">
-
-<h2>Índice de Masa Corporal (IMC)</h2>
+<h2>Índice de Masa Corporal</h2>
 
 <input id="peso" placeholder="Peso (kg)">
 <input id="altura" placeholder="Altura (cm)">
 
-<button class="calc" onclick="calcularIMC()">Calcular IMC</button>
+<button class="calc" onclick="calcularIMC()">Calcular</button>
 
 <div class="result" id="resultadoIMC"></div>
 
 <div class="info">
-<p>
-El IMC es una medida que relaciona peso y altura.
-</p>
-<p>
-18.5–24.9 suele considerarse rango saludable.
-</p>
+El índice de masa corporal es una relación entre peso y altura
+utilizada para estimar el estado ponderal de una persona.
 </div>
 
 </div>
 
+<div id="calorias" class="pagina card">
 
-<div id="calorias" class="pagina calculator">
-
-<h2>Calorías diarias (TDEE)</h2>
+<h2>Calorías diarias</h2>
 
 <input id="peso2" placeholder="Peso kg">
 <input id="altura2" placeholder="Altura cm">
@@ -177,31 +186,22 @@ El IMC es una medida que relaciona peso y altura.
 </select>
 
 <select id="actividad">
-
 <option value="1.2">Sedentario</option>
 <option value="1.37">Actividad ligera</option>
 <option value="1.55">Actividad moderada</option>
 <option value="1.72">Actividad alta</option>
 <option value="1.9">Actividad muy alta</option>
-
 </select>
 
-<button class="calc" onclick="calcularCalorias()">Calcular calorías</button>
+<button class="calc" onclick="calcularCalorias()">Calcular</button>
 
 <div class="result" id="resultadoCalorias"></div>
 
-<div class="info">
-<p>
-Esta calculadora usa la fórmula Mifflin‑St Jeor para estimar tu gasto energético.
-</p>
 </div>
 
-</div>
+<div id="proteina" class="pagina card">
 
-
-<div id="proteinas" class="pagina calculator">
-
-<h2>Proteína recomendada</h2>
+<h2>Proteína diaria</h2>
 
 <input id="peso3" placeholder="Peso kg">
 
@@ -209,175 +209,162 @@ Esta calculadora usa la fórmula Mifflin‑St Jeor para estimar tu gasto energé
 
 <div class="result" id="resultadoProteina"></div>
 
-<div class="info">
-<p>
-Personas activas suelen consumir entre 1.6 y 2.2 g por kg de peso corporal.
-</p>
 </div>
 
-</div>
+<div id="macros" class="pagina card">
 
+<h2>Macros</h2>
 
-<div id="macros" class="pagina calculator">
-
-<h2>Distribución de macronutrientes</h2>
-
-<input id="caloriasMacros" placeholder="Calorías diarias">
+<input id="caloriasMacros" placeholder="Calorías">
 
 <button class="calc" onclick="calcularMacros()">Calcular</button>
 
 <div class="result" id="resultadoMacros"></div>
 
-<div class="info">
-<p>
-Esta distribución usa 30% proteína, 25% grasa y 45% carbohidratos.
-</p>
 </div>
 
-</div>
+<div id="grasa" class="pagina card">
 
-
-<div id="altura_adulta" class="pagina calculator">
-
-<h2>Altura adulta estimada</h2>
-
-<input id="padre" placeholder="Altura padre (cm)">
-<input id="madre" placeholder="Altura madre (cm)">
-
-<select id="sexoHijo">
-<option value="6.5">Niño</option>
-<option value="-6.5">Niña</option>
-</select>
-
-<button class="calc" onclick="alturaFutura()">Calcular</button>
-
-<div class="result" id="resultadoAltura"></div>
-
-</div>
-
-
-<div id="ffmi" class="pagina calculator">
-
-<h2>Límite muscular natural (FFMI)</h2>
+<h2>Masa magra</h2>
 
 <input id="peso4" placeholder="Peso kg">
-<input id="altura4" placeholder="Altura cm">
-<input id="grasa" placeholder="% grasa corporal">
+<input id="grasa4" placeholder="% grasa">
+
+<button class="calc" onclick="masaMagra()">Calcular</button>
+
+<div class="result" id="resultadoGrasa"></div>
+
+</div>
+
+<div id="ffmi" class="pagina card">
+
+<h2>FFMI</h2>
+
+<input id="peso5" placeholder="Peso kg">
+<input id="altura5" placeholder="Altura cm">
+<input id="grasa5" placeholder="% grasa">
 
 <button class="calc" onclick="calcularFFMI()">Calcular</button>
 
 <div class="result" id="resultadoFFMI"></div>
 
-<div class="info">
-<p>
-Un FFMI cercano a 25 suele considerarse el límite natural aproximado.
-</p>
 </div>
+
+<div id="rm" class="pagina card">
+
+<h2>1RM fuerza</h2>
+
+<input id="pesoLift" placeholder="Peso levantado">
+<input id="reps" placeholder="Repeticiones">
+
+<button class="calc" onclick="calcular1RM()">Calcular</button>
+
+<div class="result" id="resultado1RM"></div>
 
 </div>
 
+<div id="agua" class="pagina card">
+
+<h2>Agua diaria</h2>
+
+<input id="pesoAgua" placeholder="Peso kg">
+
+<button class="calc" onclick="calcularAgua()">Calcular</button>
+
+<div class="result" id="resultadoAgua"></div>
+
+</div>
+
+<div id="sueno" class="pagina card">
+
+<h2>Sueño recomendado</h2>
+
+<input id="edadSueno" placeholder="Edad">
+
+<button class="calc" onclick="calcularSueno()">Calcular</button>
+
+<div class="result" id="resultadoSueno"></div>
+
+</div>
 
 <script>
 
 function mostrar(id){
-
 let paginas=document.querySelectorAll(".pagina");
-
-paginas.forEach(p=>{
-p.style.display="none";
-});
-
+paginas.forEach(p=>p.style.display="none");
 document.getElementById(id).style.display="block";
-
 }
 
-
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded",function(){
 mostrar("inicio");
 });
 
-
 function calcularIMC(){
-
 let peso=parseFloat(document.getElementById("peso").value);
 let altura=parseFloat(document.getElementById("altura").value)/100;
-
 let imc=peso/(altura*altura);
-
 document.getElementById("resultadoIMC").innerHTML="IMC: "+imc.toFixed(2);
-
 }
 
-
 function calcularCalorias(){
-
 let peso=parseFloat(document.getElementById("peso2").value);
 let altura=parseFloat(document.getElementById("altura2").value);
 let edad=parseFloat(document.getElementById("edad").value);
 let sexo=parseFloat(document.getElementById("sexo").value);
 let actividad=parseFloat(document.getElementById("actividad").value);
-
 let bmr=(10*peso)+(6.25*altura)-(5*edad)+sexo;
-
 let tdee=bmr*actividad;
-
 document.getElementById("resultadoCalorias").innerHTML="Calorías mantenimiento: "+Math.round(tdee);
-
 }
-
 
 function calcularProteina(){
-
 let peso=parseFloat(document.getElementById("peso3").value);
-
 let prote=peso*1.8;
-
-document.getElementById("resultadoProteina").innerHTML="Proteína diaria aprox: "+Math.round(prote)+" g";
-
+document.getElementById("resultadoProteina").innerHTML="Proteína diaria: "+Math.round(prote)+" g";
 }
 
-
 function calcularMacros(){
-
 let calorias=parseFloat(document.getElementById("caloriasMacros").value);
-
 let prote=(calorias*0.30)/4;
 let grasa=(calorias*0.25)/9;
 let carb=(calorias*0.45)/4;
-
-document.getElementById("resultadoMacros").innerHTML=
-"Proteínas: "+Math.round(prote)+" g<br>"+
-"Grasas: "+Math.round(grasa)+" g<br>"+
-"Carbohidratos: "+Math.round(carb)+" g";
-
+document.getElementById("resultadoMacros").innerHTML="Proteínas: "+Math.round(prote)+" g<br>Grasas: "+Math.round(grasa)+" g<br>Carbohidratos: "+Math.round(carb)+" g";
 }
 
-
-function alturaFutura(){
-
-let padre=parseFloat(document.getElementById("padre").value);
-let madre=parseFloat(document.getElementById("madre").value);
-let sexo=parseFloat(document.getElementById("sexoHijo").value);
-
-let altura=((padre+madre+sexo)/2);
-
-document.getElementById("resultadoAltura").innerHTML="Altura estimada: "+altura.toFixed(1)+" cm";
-
+function masaMagra(){
+let peso=parseFloat(document.getElementById("peso4").value);
+let grasa=parseFloat(document.getElementById("grasa4").value);
+let magra=peso*(1-grasa/100);
+document.getElementById("resultadoGrasa").innerHTML="Masa magra: "+magra.toFixed(1)+" kg";
 }
-
 
 function calcularFFMI(){
-
-let peso=parseFloat(document.getElementById("peso4").value);
-let altura=parseFloat(document.getElementById("altura4").value)/100;
-let grasa=parseFloat(document.getElementById("grasa").value);
-
+let peso=parseFloat(document.getElementById("peso5").value);
+let altura=parseFloat(document.getElementById("altura5").value)/100;
+let grasa=parseFloat(document.getElementById("grasa5").value);
 let masaMagra=peso*(1-grasa/100);
-
 let ffmi=masaMagra/(altura*altura);
-
 document.getElementById("resultadoFFMI").innerHTML="FFMI: "+ffmi.toFixed(2);
+}
 
+function calcular1RM(){
+let peso=parseFloat(document.getElementById("pesoLift").value);
+let reps=parseFloat(document.getElementById("reps").value);
+let rm=peso*(1+reps/30);
+document.getElementById("resultado1RM").innerHTML="1RM estimado: "+rm.toFixed(1)+" kg";
+}
+
+function calcularAgua(){
+let peso=parseFloat(document.getElementById("pesoAgua").value);
+let agua=peso*35;
+document.getElementById("resultadoAgua").innerHTML="Agua diaria: "+Math.round(agua)+" ml";
+}
+
+function calcularSueno(){
+let edad=parseFloat(document.getElementById("edadSueno").value);
+let horas="7‑9 horas";
+if(edad<18) horas="8‑10 horas";
+document.getElementById("resultadoSueno").innerHTML="Recomendación: "+horas;
 }
 
 </script>
