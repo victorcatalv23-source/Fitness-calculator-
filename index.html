@@ -2,10 +2,11 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>Calculadoras Fitness</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadoras Fitness</title>
 
 <style>
+
 body{
 font-family:Arial, sans-serif;
 background:linear-gradient(135deg,#1e3c72,#2a5298);
@@ -20,16 +21,34 @@ text-align:center;
 color:white;
 }
 
+.menu{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+margin-bottom:20px;
+justify-content:center;
+}
+
+.menu button{
+background:#1e3c72;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+}
+
+.menu button:hover{
+background:#2a5298;
+}
+
 .calculator{
 background:white;
 padding:25px;
 margin:25px 0;
 border-radius:15px;
 box-shadow:0 5px 15px rgba(0,0,0,0.2);
-}
-
-h2{
-margin-top:0;
+color:#222;
 }
 
 input,select{
@@ -38,6 +57,7 @@ padding:12px;
 margin:6px 0;
 border-radius:8px;
 border:1px solid #ccc;
+box-sizing:border-box;
 }
 
 button{
@@ -59,21 +79,73 @@ margin-top:12px;
 font-size:18px;
 font-weight:bold;
 }
+
+.info{
+background:#f0f4ff;
+padding:15px;
+border-radius:10px;
+margin-top:15px;
+font-size:14px;
+}
+
+.pagina{
+display:none;
+}
+
+.lang{
+float:right;
+}
+
 </style>
+
 </head>
 
 <body>
 
-<h1>Calculadoras Fitness</h1>
+<div class="lang">
+<select onchange="cambiarIdioma(this.value)">
+<option value="es">ES</option>
+<option value="en">EN</option>
+</select>
+</div>
+
+<h1 data-es="Calculadoras Fitness" data-en="Fitness Calculators">
+Calculadoras Fitness
+</h1>
+
+<nav class="menu">
+<button onclick="mostrar('inicio')" data-es="Inicio" data-en="Home">Inicio</button>
+<button onclick="mostrar('imc')">IMC</button>
+<button onclick="mostrar('calorias')" data-es="Calorías" data-en="Calories">Calorías</button>
+<button onclick="mostrar('proteinas')" data-es="Proteínas" data-en="Protein">Proteínas</button>
+<button onclick="mostrar('macros')">Macros</button>
+</nav>
+
+<!-- INICIO -->
+
+<div id="inicio" class="pagina calculator">
+
+<p data-es="Herramientas gratuitas para calcular calorías, macros, proteína diaria y métricas corporales."
+data-en="Free tools to calculate calories, macros, protein and body metrics.">
+Herramientas gratuitas para calcular calorías, macros, proteína diaria y métricas corporales.
+</p>
+
+<p data-es="Selecciona una calculadora en el menú."
+data-en="Select a calculator in the menu.">
+Selecciona una calculadora en el menú.
+</p>
+
+</div>
 
 <!-- IMC -->
-<div class="calculator">
-<h2>Calculadora IMC</h2>
 
-  <p>
-Calcula tu índice de masa corporal para estimar si tu peso está
-dentro de un rango saludable.
-  </p>
+<div id="imc" class="pagina calculator">
+
+<h2>IMC</h2>
+
+<p class="info">
+El índice de masa corporal estima si tu peso es saludable según tu altura.
+</p>
 
 <input id="peso" placeholder="Peso (kg)">
 <input id="altura" placeholder="Altura (cm)">
@@ -81,12 +153,18 @@ dentro de un rango saludable.
 <button onclick="calcularIMC()">Calcular</button>
 
 <div class="result" id="resultadoIMC"></div>
+
 </div>
 
+<!-- CALORIAS -->
 
-<!-- CALORÍAS -->
-<div class="calculator">
-<h2>Calorías diarias (TDEE)</h2>
+<div id="calorias" class="pagina calculator">
+
+<h2>TDEE</h2>
+
+<p class="info">
+Estimación de calorías diarias según metabolismo y actividad.
+</p>
 
 <input id="peso2" placeholder="Peso kg">
 <input id="altura2" placeholder="Altura cm">
@@ -99,92 +177,69 @@ dentro de un rango saludable.
 
 <select id="actividad">
 
-<option value="1.2">
-Sedentario (poco o ningún ejercicio)
-</option>
-
-<option value="1.37">
-Actividad ligera (1-3 entrenamientos por semana)
-</option>
-
-<option value="1.55">
-Actividad moderada (3-5 entrenamientos por semana)
-</option>
-
-<option value="1.72">
-Actividad alta (6-7 entrenamientos por semana)
-</option>
-
-<option value="1.9">
-Actividad muy alta (entrenamiento diario intenso)
-</option>
+<option value="1.2">Sedentario</option>
+<option value="1.37">Actividad ligera</option>
+<option value="1.55">Actividad moderada</option>
+<option value="1.72">Actividad alta</option>
+<option value="1.9">Actividad muy alta</option>
 
 </select>
 
 <button onclick="calcularCalorias()">Calcular</button>
 
 <div class="result" id="resultadoCalorias"></div>
+
 </div>
 
-
 <!-- PROTEINAS -->
-<div class="calculator">
-<h2>Proteínas recomendadas</h2>
+
+<div id="proteinas" class="pagina calculator">
+
+<h2>Proteínas</h2>
+
+<p class="info">
+Para entrenamiento de fuerza suele recomendarse entre 1.6 y 2.2 g/kg de proteína diaria.
+</p>
 
 <input id="peso3" placeholder="Peso kg">
 
 <button onclick="calcularProteina()">Calcular</button>
 
 <div class="result" id="resultadoProteina"></div>
+
 </div>
 
-
 <!-- MACROS -->
-<div class="calculator">
-<h2>Macros recomendados</h2>
+
+<div id="macros" class="pagina calculator">
+
+<h2>Macros</h2>
 
 <input id="caloriasMacros" placeholder="Calorías diarias">
 
 <button onclick="calcularMacros()">Calcular</button>
 
 <div class="result" id="resultadoMacros"></div>
+
 </div>
-
-
-<!-- ALTURA ADULTA -->
-<div class="calculator">
-<h2>Altura adulta estimada</h2>
-
-<input id="padre" placeholder="Altura padre (cm)">
-<input id="madre" placeholder="Altura madre (cm)">
-
-<select id="sexoHijo">
-<option value="6.5">Niño</option>
-<option value="-6.5">Niña</option>
-</select>
-
-<button onclick="alturaFutura()">Calcular</button>
-
-<div class="result" id="resultadoAltura"></div>
-</div>
-
-
-<!-- LIMITE NATURAL -->
-<div class="calculator">
-<h2>Límite muscular natural (FFMI)</h2>
-
-<input id="peso4" placeholder="Peso kg">
-<input id="altura4" placeholder="Altura cm">
-<input id="grasa" placeholder="% grasa corporal">
-
-<button onclick="calcularFFMI()">Calcular</button>
-
-<div class="result" id="resultadoFFMI"></div>
-</div>
-
-
 
 <script>
+
+function mostrar(id){
+
+let paginas=document.querySelectorAll(".pagina");
+
+paginas.forEach(p=>{
+p.style.display="none";
+});
+
+document.getElementById(id).style.display="block";
+
+}
+
+document.addEventListener("DOMContentLoaded",function(){
+mostrar("inicio");
+});
 
 function calcularIMC(){
 
@@ -197,7 +252,6 @@ document.getElementById("resultadoIMC").innerHTML=
 "IMC: "+imc.toFixed(2);
 
 }
-
 
 function calcularCalorias(){
 
@@ -216,7 +270,6 @@ document.getElementById("resultadoCalorias").innerHTML=
 
 }
 
-
 function calcularProteina(){
 
 let peso=document.getElementById("peso3").value;
@@ -228,7 +281,6 @@ document.getElementById("resultadoProteina").innerHTML=
 
 }
 
-
 function calcularMacros(){
 
 let calorias=document.getElementById("caloriasMacros").value;
@@ -238,41 +290,19 @@ let grasa=(calorias*0.25)/9;
 let carb=(calorias*0.45)/4;
 
 document.getElementById("resultadoMacros").innerHTML=
-
 "Proteínas: "+Math.round(prote)+" g<br>"+
 "Grasas: "+Math.round(grasa)+" g<br>"+
 "Carbohidratos: "+Math.round(carb)+" g";
 
 }
 
+function cambiarIdioma(idioma){
 
-function alturaFutura(){
+let elementos=document.querySelectorAll("[data-es]");
 
-let padre=parseFloat(document.getElementById("padre").value);
-let madre=parseFloat(document.getElementById("madre").value);
-let sexo=parseFloat(document.getElementById("sexoHijo").value);
-
-let altura=((padre+madre+sexo)/2);
-
-document.getElementById("resultadoAltura").innerHTML=
-"Altura estimada: "+altura.toFixed(1)+" cm";
-
-}
-
-
-
-function calcularFFMI(){
-
-let peso=document.getElementById("peso4").value;
-let altura=document.getElementById("altura4").value/100;
-let grasa=document.getElementById("grasa").value;
-
-let masaMagra=peso*(1-grasa/100);
-
-let ffmi=masaMagra/(altura*altura);
-
-document.getElementById("resultadoFFMI").innerHTML=
-"FFMI: "+ffmi.toFixed(2)+" (25 suele ser el límite natural aproximado)";
+elementos.forEach(el=>{
+el.innerText=el.dataset[idioma];
+});
 
 }
 
