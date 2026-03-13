@@ -114,14 +114,18 @@
     .page{
       display:none;
       margin-top:26px;
-      padding:0 16px;
+      padding:0 12px;
     }
     .grid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap:24px;
+      row-gap:32px;
+      column-gap:40px;
       margin:10px 0 24px 0;
-      padding:0 8px;
+      padding:0 12px;
+    }
+    .grid + .grid{
+      margin-top:24px;
     }
     .card{
       background:var(--card);
@@ -153,7 +157,7 @@
       display:block;
       margin-top:6px;
     }
-    input, select{
+    input, select, textarea{
       width:100%;
       padding:10px 12px;
       border-radius:10px;
@@ -195,6 +199,17 @@
     [data-theme="dark"] .calc{
       background:rgba(17,27,46,0.9);
       border:1px solid rgba(55,65,81,0.6);
+    }
+    [data-theme="dark"] input,
+    [data-theme="dark"] select,
+    [data-theme="dark"] textarea{
+      background:#0b1a33;
+      color:#e5ecff;
+      border:1px solid #334155;
+    }
+    [data-theme="dark"] input::placeholder,
+    [data-theme="dark"] textarea::placeholder{
+      color:#9aa7c7;
     }
     [data-theme="dark"] .result{
       background:rgba(30,41,59,0.9);
@@ -265,6 +280,67 @@
       transform:translateY(6px);
       transition:all .25s ease;
       z-index:9999;
+    }
+    .cookie-banner{
+      position:fixed;
+      left:16px;
+      right:16px;
+      bottom:16px;
+      margin:0 auto;
+      max-width:900px;
+      background:var(--card);
+      color:var(--ink);
+      border-radius:14px;
+      box-shadow:var(--shadow);
+      padding:16px;
+      display:none;
+      z-index:9998;
+    }
+    .cookie-text{
+      font-size:13px;
+      line-height:1.5;
+      color:var(--ink-soft);
+    }
+    .cookie-benefits{
+      margin-top:8px;
+      font-weight:600;
+      color:var(--ink);
+    }
+    .cookie-list{
+      margin:6px 0 0 16px;
+      padding:0;
+    }
+    .cookie-list li{
+      margin:4px 0;
+      font-size:12.5px;
+      color:var(--ink-soft);
+    }
+    .cookie-actions{
+      margin-top:12px;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .cookie-btn{
+      padding:10px 14px;
+      border:none;
+      border-radius:10px;
+      background:var(--brand-2);
+      color:white;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .cookie-btn.ghost{
+      background:#e8eefc;
+      color:#1f2a44;
+    }
+    [data-theme="dark"] .cookie-banner{
+      background:#111b2e;
+      color:#e5ecff;
+    }
+    [data-theme="dark"] .cookie-btn.ghost{
+      background:#1f2b46;
+      color:#e5ecff;
     }
     .toast.show{
       opacity:1;
@@ -337,12 +413,12 @@
           <ul id="historyList" class="history"></ul>
         </div>
         <div class="card">
-          <h2 data-i18n="home.ideas.title">Ideas rápidas para mejorar</h2>
-          <p data-i18n="home.ideas.p1">
-            Añade nuevas secciones, comparte resultados y crea artículos largos para mejorar el SEO.
+          <h2 data-i18n="home.feedback.title">Sugerencias y reporte de errores</h2>
+          <p data-i18n="home.feedback.p1">
+            Si detectas errores o tienes ideas, apúntalas y háznoslas llegar por el canal que prefieras. Este bloque es solo informativo.
           </p>
-          <div class="info" data-i18n="home.ideas.list">
-            - Crea una guía por calculadora. - Añade ejemplos de uso. - Comparte en redes. - Añade un blog semanal.
+          <div class="info" data-i18n="home.feedback.note">
+            Tu feedback nos ayuda a mejorar la precisión, el diseño y la experiencia general.
           </div>
         </div>
         <div class="card">
@@ -377,6 +453,58 @@
             <button class="calc-btn" onclick="saveProfile()" data-i18n="btn.save">Guardar perfil</button>
             <button class="calc-btn" onclick="applyProfile()" data-i18n="btn.apply">Aplicar perfil</button>
             <button class="calc-btn" onclick="clearHistory()" data-i18n="btn.clearHistory">Borrar historial</button>
+          </div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="home.quick.title">Modo rápido</h2>
+          <p data-i18n="home.quick.p1">Introduce tus datos una sola vez y obtén resultados clave.</p>
+          <div class="calc">
+            <label data-i18n="label.weight">Peso (kg)</label>
+            <input id="quick_weight" type="number" step="0.1" data-i18n-placeholder="ph.weight">
+            <label data-i18n="label.height">Altura (cm)</label>
+            <input id="quick_height" type="number" step="0.1" data-i18n-placeholder="ph.height">
+            <label data-i18n="label.age">Edad</label>
+            <input id="quick_age" type="number" data-i18n-placeholder="ph.age">
+            <label data-i18n="label.sex">Sexo</label>
+            <select id="quick_sex">
+              <option value="5" data-i18n="opt.male">Hombre</option>
+              <option value="-161" data-i18n="opt.female">Mujer</option>
+            </select>
+            <label data-i18n="label.activity">Actividad</label>
+            <select id="quick_activity">
+              <option value="1.2" data-i18n="opt.sedentary">Sedentario</option>
+              <option value="1.37" data-i18n="opt.light">Actividad ligera</option>
+              <option value="1.55" data-i18n="opt.moderate">Actividad moderada</option>
+              <option value="1.72" data-i18n="opt.high">Actividad alta</option>
+              <option value="1.9" data-i18n="opt.veryhigh">Actividad muy alta</option>
+            </select>
+            <button class="calc-btn" onclick="calcQuick()" data-i18n="btn.calculate">Calcular</button>
+            <div id="quick_result" class="result"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="home.goals.title">Planificador de objetivo</h2>
+          <p data-i18n="home.goals.p1">Guarda tu objetivo y calcula el ritmo semanal recomendado.</p>
+          <div class="calc">
+            <label data-i18n="label.current">Peso actual (kg)</label>
+            <input id="goal_current" type="number" step="0.1" data-i18n-placeholder="ph.weight">
+            <label data-i18n="label.target">Peso objetivo (kg)</label>
+            <input id="goal_target" type="number" step="0.1" data-i18n-placeholder="ph.weight">
+            <label data-i18n="label.weeks">Semanas</label>
+            <input id="goal_weeks" type="number" data-i18n-placeholder="ph.weeks">
+            <button class="calc-btn" onclick="calcGoal()" data-i18n="btn.calculate">Calcular</button>
+            <button class="calc-btn" onclick="saveGoal()" data-i18n="btn.saveGoal">Guardar objetivo</button>
+            <div id="goal_result" class="result"></div>
+          </div>
+        </div>
+        <div class="card">
+          <h2 data-i18n="home.calorie.title">Registro de calorías</h2>
+          <p data-i18n="home.calorie.p1">Guarda tu ingesta diaria y visualiza la tendencia.</p>
+          <div class="calc">
+            <label data-i18n="label.calories">Calorías (kcal)</label>
+            <input id="calorie_value" type="number" data-i18n-placeholder="ph.tdee">
+            <button class="calc-btn" onclick="addCaloriePoint()" data-i18n="btn.addPoint">Añadir punto</button>
+            <canvas id="calorieChart" width="320" height="160" style="width:100%;margin-top:10px;border-radius:10px;background:#0b1a33;"></canvas>
           </div>
         </div>
       </div>
@@ -528,6 +656,7 @@
           </div>
         </div>
       </div>
+      <div class="grid">
         <div class="card" id="calc-tdee" data-calc="tdee" data-section="nutrition" data-search="tdee calorias mantenimiento">
           <a class="calc-link" href="#calc:tdee">link</a>
           <h2 data-i18n="tdee.title">Calorías diarias (TDEE)</h2>
@@ -1394,6 +1523,25 @@
   </div>
 
   <div id="toast" class="toast"></div>
+  <div id="cookieBanner" class="cookie-banner">
+    <div class="cookie-text">
+      <strong data-i18n="cookie.title">Cookies y almacenamiento local</strong><br>
+      <span data-i18n="cookie.body">
+        Usamos cookies y almacenamiento local para recordar idioma, tema, perfil e historial.
+      </span>
+      <div class="cookie-benefits" data-i18n="cookie.benefits">Ventajas:</div>
+      <ul class="cookie-list">
+        <li data-i18n="cookie.item1">Recordar idioma y tema para no tener que configurarlo cada vez.</li>
+        <li data-i18n="cookie.item2">Guardar perfil, objetivos e historial para comparar progresos.</li>
+        <li data-i18n="cookie.item3">Cargar más rápido tus gráficos y resultados recientes.</li>
+        <li data-i18n="cookie.item4">Mejor experiencia de uso sin repetir datos.</li>
+      </ul>
+    </div>
+    <div class="cookie-actions">
+      <button id="cookieAccept" class="cookie-btn" data-i18n="cookie.accept">Aceptar</button>
+      <button id="cookieReject" class="cookie-btn ghost" data-i18n="cookie.reject">Rechazar</button>
+    </div>
+  </div>
 
   <script>
     const I18N = {
@@ -1409,6 +1557,17 @@
         "menu.recovery":"Recuperación",
         "menu.tools":"Herramientas",
         "menu.education":"Guías",
+        "cookie.title":"Cookies y almacenamiento local",
+        "cookie.body":"Usamos cookies y almacenamiento local para recordar idioma, tema, perfil e historial.",
+        "cookie.benefits":"Ventajas:",
+        "cookie.item1":"Recordar idioma y tema para no tener que configurarlo cada vez.",
+        "cookie.item2":"Guardar perfil, objetivos e historial para comparar progresos.",
+        "cookie.item3":"Cargar más rápido tus gráficos y resultados recientes.",
+        "cookie.item4":"Mejor experiencia de uso sin repetir datos.",
+        "cookie.accept":"Aceptar",
+        "cookie.reject":"Rechazar",
+        "cookie.toast.accept":"Preferencias guardadas",
+        "cookie.toast.reject":"Preferencias guardadas. Puedes activar cookies cuando quieras.",
         "home.welcome.title":"Bienvenido a Fitness Lab Pro",
         "home.welcome.p1":"Aquí tienes un laboratorio completo de cálculo y educación. Cada sección ofrece explicaciones, rangos recomendados y consejos prácticos basados en literatura de nutrición y entrenamiento.",
         "home.welcome.p2":"Usa el buscador para encontrar cualquier herramienta en segundos. El idioma se adapta automáticamente y puedes cambiarlo manualmente cuando quieras.",
@@ -1418,9 +1577,18 @@
         "home.history.title":"Historial reciente",
         "home.history.p1":"Guarda tus últimos cálculos en este navegador para comparar resultados y hacer seguimiento de tu progreso. El historial se guarda de forma local.",
         "history.empty":"No hay resultados aún.",
+        "home.feedback.title":"Sugerencias y reporte de errores",
+        "home.feedback.p1":"Si detectas errores o tienes ideas, apúntalas y háznoslas llegar por el canal que prefieras. Este bloque es solo informativo.",
+        "home.feedback.note":"Tu feedback nos ayuda a mejorar la precisión, el diseño y la experiencia general.",
         "home.profile.title":"Perfil rápido",
         "home.profile.p1":"Guarda tu perfil para rellenar calculadoras automáticamente y comparar resultados con rapidez.",
         "home.profile.help":"Guardar perfil: almacena tu peso, altura, edad y actividad. Aplicar perfil: rellena automáticamente las calculadoras principales (TDEE, BMR, IMC, agua, proteína, grasa mínima).",
+        "home.quick.title":"Modo rápido",
+        "home.quick.p1":"Introduce tus datos una sola vez y obtén resultados clave.",
+        "home.goals.title":"Planificador de objetivo",
+        "home.goals.p1":"Guarda tu objetivo y calcula el ritmo semanal recomendado.",
+        "home.calorie.title":"Registro de calorías",
+        "home.calorie.p1":"Guarda tu ingesta diaria y visualiza la tendencia.",
         "home.ideas.title":"Ideas rápidas para mejorar",
         "home.ideas.p1":"Añade nuevas secciones, comparte resultados y crea artículos largos para mejorar el SEO.",
         "home.ideas.list":"- Crea una guía por calculadora. - Añade ejemplos de uso. - Comparte en redes. - Añade un blog semanal.",
@@ -1606,6 +1774,10 @@
         "label.activity":"Actividad",
         "label.tdee":"TDEE (calorías)",
         "label.goal":"Objetivo",
+        "label.current":"Peso actual (kg)",
+        "label.target":"Peso objetivo (kg)",
+        "label.weeks":"Semanas",
+        "label.calories":"Calorías (kcal)",
         "label.chest":"Pecho (mm)",
         "label.abdomen":"Abdomen (mm)",
         "label.thigh":"Muslo (mm)",
@@ -1663,6 +1835,7 @@
         "opt.rest.endurance":"Resistencia (30-60s)",
         "btn.calculate":"Calcular",
         "btn.addPoint":"Añadir punto",
+        "btn.saveGoal":"Guardar objetivo",
         "btn.save":"Guardar perfil",
         "btn.apply":"Aplicar perfil",
         "btn.clearHistory":"Borrar historial",
@@ -1692,6 +1865,7 @@
         "ph.weightlb":"Ej: 154",
         "ph.heightin":"Ej: 68",
         "ph.meals":"Ej: 4",
+        "ph.weeks":"Ej: 12",
         "ph.fat":"Ej: 60",
         "ph.carb":"Ej: 250",
         "ph.bmi":"Ej: 23.5",
@@ -1713,6 +1887,17 @@
         "menu.recovery":"Recovery",
         "menu.tools":"Tools",
         "menu.education":"Guides",
+        "cookie.title":"Cookies and local storage",
+        "cookie.body":"We use cookies and local storage to remember language, theme, profile, and history.",
+        "cookie.benefits":"Benefits:",
+        "cookie.item1":"Remember language and theme so you don't need to set it every time.",
+        "cookie.item2":"Save profile, goals, and history to compare progress.",
+        "cookie.item3":"Load your charts and recent results faster.",
+        "cookie.item4":"Better experience without retyping data.",
+        "cookie.accept":"Accept",
+        "cookie.reject":"Reject",
+        "cookie.toast.accept":"Preferences saved",
+        "cookie.toast.reject":"Preferences saved. You can enable cookies anytime.",
         "home.welcome.title":"Welcome to Fitness Lab Pro",
         "home.welcome.p1":"A complete lab of calculations and education. Each section includes explanations, ranges and practical advice based on nutrition and training literature.",
         "home.welcome.p2":"Use the search box to find any tool in seconds. Language adapts automatically and you can switch it any time.",
@@ -1722,12 +1907,12 @@
         "home.history.title":"Recent history",
         "home.history.p1":"Save your latest results in this browser to compare changes over time. History is stored locally.",
         "history.empty":"No results yet.",
+        "home.feedback.title":"Suggestions and bug reports",
+        "home.feedback.p1":"If you spot errors or have ideas, note them and send them through the channel you prefer. This block is informational only.",
+        "home.feedback.note":"Your feedback helps improve accuracy, design, and the overall experience.",
         "home.profile.title":"Quick profile",
         "home.profile.p1":"Save your profile to fill calculators faster and compare results easily.",
         "home.profile.help":"Save profile stores your weight, height, age and activity. Apply profile fills key calculators (TDEE, BMR, BMI, water, protein, fat minimum).",
-        "home.ideas.title":"Quick ideas to improve",
-        "home.ideas.p1":"Add new sections, share results and write long articles to improve SEO.",
-        "home.ideas.list":"- Create a guide per calculator. - Add usage examples. - Share on social. - Post weekly.",
         "nutrition.title":"Nutrition and energy",
         "body.title":"Body composition",
         "training.title":"Strength training",
@@ -1910,6 +2095,10 @@
         "label.activity":"Activity",
         "label.tdee":"TDEE (calories)",
         "label.goal":"Goal",
+        "label.current":"Current weight (kg)",
+        "label.target":"Target weight (kg)",
+        "label.weeks":"Weeks",
+        "label.calories":"Calories (kcal)",
         "label.chest":"Chest (mm)",
         "label.abdomen":"Abdomen (mm)",
         "label.thigh":"Thigh (mm)",
@@ -1967,6 +2156,7 @@
         "opt.rest.endurance":"Endurance (30-60s)",
         "btn.calculate":"Calculate",
         "btn.addPoint":"Add point",
+        "btn.saveGoal":"Save goal",
         "btn.save":"Save profile",
         "btn.apply":"Apply profile",
         "btn.clearHistory":"Clear history",
@@ -1996,6 +2186,7 @@
         "ph.weightlb":"e.g. 154",
         "ph.heightin":"e.g. 68",
         "ph.meals":"e.g. 4",
+        "ph.weeks":"e.g. 12",
         "ph.fat":"e.g. 60",
         "ph.carb":"e.g. 250",
         "ph.bmi":"e.g. 23.5",
@@ -2011,6 +2202,7 @@
     let currentLang = "es";
     const profileKey = "fitnesslab_profile";
     const themeKey = "fitnesslab_theme";
+    const consentKey = "fitnesslab_consent";
     let currentSection = "home";
 
     function getLang(){
@@ -2104,12 +2296,58 @@
       localStorage.setItem(themeKey, theme);
     }
 
+    function setCookie(name, value, days){
+      const maxAge = days * 24 * 60 * 60;
+      document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; samesite=lax`;
+    }
+
+    function getCookie(name){
+      const item = document.cookie.split("; ").find(row=>row.startsWith(name + "="));
+      return item ? decodeURIComponent(item.split("=")[1]) : "";
+    }
+
+    function getConsent(){
+      return getCookie(consentKey) || localStorage.getItem(consentKey) || "";
+    }
+
+    function setConsent(value){
+      setCookie(consentKey, value, value === "accept" ? 365 : 180);
+      localStorage.setItem(consentKey, value);
+    }
+
     function toast(message){
       const el = document.getElementById("toast");
       if(!el){ return; }
       el.textContent = message;
       el.classList.add("show");
       setTimeout(()=>{ el.classList.remove("show"); }, 2200);
+    }
+
+    function initCookieBanner(){
+      const banner = document.getElementById("cookieBanner");
+      if(!banner){ return; }
+      const consent = getConsent();
+      if(!consent){
+        banner.style.display = "block";
+      }
+      const accept = document.getElementById("cookieAccept");
+      const reject = document.getElementById("cookieReject");
+      if(accept){
+        accept.addEventListener("click", ()=>{
+          setConsent("accept");
+          banner.style.display = "none";
+          const dict = I18N[currentLang] || I18N.en;
+          toast(dict["cookie.toast.accept"] || "Preferences saved");
+        });
+      }
+      if(reject){
+        reject.addEventListener("click", ()=>{
+          setConsent("reject");
+          banner.style.display = "none";
+          const dict = I18N[currentLang] || I18N.en;
+          toast(dict["cookie.toast.reject"] || "Preferences saved");
+        });
+      }
     }
 
     // calc-link feature removed by request
@@ -2600,6 +2838,92 @@
       addHistory("Calorías por comida", res);
     }
 
+    function calcQuick(){
+      const w = val("quick_weight"), h = val("quick_height"), a = val("quick_age");
+      const sex = parseFloat(document.getElementById("quick_sex").value);
+      const act = parseFloat(document.getElementById("quick_activity").value);
+      if(!w || !h || !a){ return show("quick_result",""); }
+      const bmr = (10*w) + (6.25*h) - (5*a) + sex;
+      const tdee = Math.round(bmr * act);
+      const bmi = (w / ((h/100)*(h/100))).toFixed(1);
+      const protein = Math.round(w * 1.8);
+      const water = (w * 35 / 1000).toFixed(2);
+      const res = (currentLang === "es"
+        ? "TDEE " + tdee + " kcal | IMC " + bmi + " | Proteína " + protein + " g | Agua " + water + " L"
+        : "TDEE " + tdee + " kcal | BMI " + bmi + " | Protein " + protein + " g | Water " + water + " L");
+      show("quick_result", res);
+      addHistory("Quick", res);
+    }
+
+    function calcGoal(){
+      const current = val("goal_current");
+      const target = val("goal_target");
+      const weeks = val("goal_weeks");
+      if(!current || !target || !weeks){ return show("goal_result",""); }
+      const diff = target - current;
+      const perWeek = (diff / weeks).toFixed(2);
+      const kcalWeek = (diff * 7700 / weeks).toFixed(0);
+      const res = currentLang === "es"
+        ? "Cambio semanal: " + perWeek + " kg | Ajuste: " + kcalWeek + " kcal/semana"
+        : "Weekly change: " + perWeek + " kg | Adjustment: " + kcalWeek + " kcal/week";
+      show("goal_result", res);
+    }
+
+    function saveGoal(){
+      const data = {
+        current: val("goal_current"),
+        target: val("goal_target"),
+        weeks: val("goal_weeks")
+      };
+      localStorage.setItem("fitnesslab_goal", JSON.stringify(data));
+      toast(currentLang === "es" ? "Objetivo guardado" : "Goal saved");
+    }
+
+    function loadGoal(){
+      const raw = localStorage.getItem("fitnesslab_goal");
+      if(!raw){ return; }
+      const g = JSON.parse(raw);
+      if(g.current){ document.getElementById("goal_current").value = g.current; }
+      if(g.target){ document.getElementById("goal_target").value = g.target; }
+      if(g.weeks){ document.getElementById("goal_weeks").value = g.weeks; }
+    }
+
+    const calorieKey = "fitnesslab_calories";
+    function addCaloriePoint(){
+      const c = val("calorie_value");
+      if(!c){ return; }
+      const list = JSON.parse(localStorage.getItem(calorieKey) || "[]");
+      list.unshift({ value: c, time: Date.now() });
+      const trimmed = list.slice(0, 20);
+      localStorage.setItem(calorieKey, JSON.stringify(trimmed));
+      drawCalorieChart();
+      addHistory("Calorías", c + " kcal");
+    }
+
+    function drawCalorieChart(){
+      const canvas = document.getElementById("calorieChart");
+      if(!canvas){ return; }
+      const ctx = canvas.getContext("2d");
+      const list = JSON.parse(localStorage.getItem(calorieKey) || "[]").slice().reverse();
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = "#0b1a33";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      if(list.length === 0){ return; }
+      const values = list.map(p=>p.value);
+      const min = Math.min(...values) - 50;
+      const max = Math.max(...values) + 50;
+      const w = canvas.width, h = canvas.height;
+      ctx.strokeStyle = "#60a5fa";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      list.forEach((p,i)=>{
+        const x = (i/(list.length-1 || 1)) * (w-20) + 10;
+        const y = h - ((p.value - min)/(max - min)) * (h-20) - 10;
+        if(i===0){ ctx.moveTo(x,y); } else { ctx.lineTo(x,y); }
+      });
+      ctx.stroke();
+    }
+
     function calcSkinfold(){
       const sex = document.getElementById("skinfold_sex").value;
       const age = val("skinfold_age");
@@ -2839,11 +3163,14 @@
     document.addEventListener("DOMContentLoaded", ()=>{
       const lang = getLang();
       applyLang(lang);
+      initCookieBanner();
       setupMenu();
       setupSearch();
       renderHistory();
       loadProfileIntoForm();
+      loadGoal();
       drawWeightChart();
+      drawCalorieChart();
       loadEducation();
       const savedTheme = localStorage.getItem(themeKey) || "light";
       applyTheme(savedTheme);
