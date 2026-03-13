@@ -18,6 +18,17 @@
       --radius:14px;
       --shadow:0 8px 20px rgba(12, 30, 64, 0.18);
     }
+    [data-theme="dark"]{
+      --bg:#0b1220;
+      --bg-2:#0e1729;
+      --ink:#e5ecff;
+      --ink-soft:#c2cce6;
+      --brand:#1a2f57;
+      --brand-2:#254a8a;
+      --card:#111b2e;
+      --accent:#22c55e;
+      --shadow:0 10px 24px rgba(0,0,0,0.45);
+    }
     *{ box-sizing:border-box; }
     body{
       margin:0;
@@ -61,6 +72,16 @@
       border:none;
       outline:none;
     }
+    .theme-btn{
+      padding:10px 12px;
+      border-radius:10px;
+      border:none;
+      background:#0f2546;
+      color:white;
+      cursor:pointer;
+      font-weight:600;
+    }
+    .theme-btn:hover{ background:#0b1c35; }
     .search{ min-width:220px; }
     h1{
       margin:10px 0 6px 0;
@@ -104,8 +125,21 @@
       border-radius:var(--radius);
       box-shadow:var(--shadow);
       padding:18px;
+      position:relative;
     }
     .card h2{ margin:0 0 8px 0; }
+    .calc-link{
+      position:absolute;
+      top:14px;
+      right:14px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:12px;
+      color:var(--brand-2);
+      background:#eef2ff;
+      padding:4px 8px;
+      border-radius:999px;
+    }
     .card p{
       color:var(--ink-soft);
       line-height:1.5;
@@ -115,8 +149,8 @@
       margin-top:14px;
       padding:12px;
       border-radius:12px;
-      background:#f7f9ff;
-      border:1px solid #dbe6ff;
+      background:rgba(255,255,255,0.6);
+      border:1px solid rgba(219,230,255,0.8);
     }
     label{
       font-size:13px;
@@ -149,19 +183,31 @@
       margin-top:10px;
       padding:10px;
       border-radius:10px;
-      background:#e8f0ff;
+      background:rgba(232,240,255,0.8);
       font-weight:700;
       color:#0f2342;
     }
     .info{
       margin-top:10px;
       padding:12px;
-      background:#f3f7ff;
+      background:rgba(243,247,255,0.9);
       border-left:4px solid var(--brand-2);
       border-radius:10px;
       font-size:13px;
       color:var(--ink-soft);
       line-height:1.55;
+    }
+    [data-theme="dark"] .calc{
+      background:rgba(17,27,46,0.9);
+      border:1px solid rgba(55,65,81,0.6);
+    }
+    [data-theme="dark"] .result{
+      background:rgba(30,41,59,0.9);
+      color:#e2e8f0;
+    }
+    [data-theme="dark"] .info{
+      background:rgba(17,25,40,0.9);
+      border-left:4px solid #3b82f6;
     }
     .pill{
       display:inline-block;
@@ -222,6 +268,7 @@
         <div class="logo">Fitness Lab Pro</div>
         <div class="controls">
           <input id="search" class="search" type="text" data-i18n-placeholder="search.placeholder" placeholder="Buscar calculadora...">
+          <button id="themeToggle" class="theme-btn" data-i18n="btn.theme">Tema</button>
           <select id="langSelect" class="lang-select">
             <option value="es">ES</option>
             <option value="en">EN</option>
@@ -271,7 +318,44 @@
           </p>
           <ul id="historyList" class="history"></ul>
         </div>
-        <div class="card" data-search="proteina diaria gramos">
+        <div class="card">
+          <h2 data-i18n="home.profile.title">Perfil rápido</h2>
+          <p data-i18n="home.profile.p1">
+            Guarda tu perfil para rellenar calculadoras automáticamente y comparar resultados con rapidez.
+          </p>
+          <div class="calc">
+            <label data-i18n="label.weight">Peso (kg)</label>
+            <input id="profile_weight" type="number" step="0.1" data-i18n-placeholder="ph.weight">
+            <label data-i18n="label.height">Altura (cm)</label>
+            <input id="profile_height" type="number" step="0.1" data-i18n-placeholder="ph.height">
+            <label data-i18n="label.age">Edad</label>
+            <input id="profile_age" type="number" data-i18n-placeholder="ph.age">
+            <label data-i18n="label.sex">Sexo</label>
+            <select id="profile_sex">
+              <option value="5" data-i18n="opt.male">Hombre</option>
+              <option value="-161" data-i18n="opt.female">Mujer</option>
+            </select>
+            <label data-i18n="label.activity">Actividad</label>
+            <select id="profile_activity">
+              <option value="1.2" data-i18n="opt.sedentary">Sedentario</option>
+              <option value="1.37" data-i18n="opt.light">Actividad ligera</option>
+              <option value="1.55" data-i18n="opt.moderate">Actividad moderada</option>
+              <option value="1.72" data-i18n="opt.high">Actividad alta</option>
+              <option value="1.9" data-i18n="opt.veryhigh">Actividad muy alta</option>
+            </select>
+            <button class="calc-btn" onclick="saveProfile()" data-i18n="btn.save">Guardar perfil</button>
+            <button class="calc-btn" onclick="applyProfile()" data-i18n="btn.apply">Aplicar perfil</button>
+            <button class="calc-btn" onclick="clearHistory()" data-i18n="btn.clearHistory">Borrar historial</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="nutrition" class="page">
+      <h2 class="section-title" data-i18n="nutrition.title">Nutrición y energía</h2>
+      <div class="grid">
+        <div class="card" id="calc-protein" data-calc="protein" data-section="nutrition" data-search="proteina diaria gramos">
+          <a class="calc-link" href="#calc:protein">link</a>
           <h2 data-i18n="protein.title">Proteína diaria</h2>
           <p data-i18n="protein.desc">Recomendación basada en peso corporal y objetivo.</p>
           <div class="calc">
@@ -291,7 +375,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="macros carbohidratos grasas">
+        <div class="card" id="calc-macros" data-calc="macros" data-section="nutrition" data-search="macros carbohidratos grasas">
+          <a class="calc-link" href="#calc:macros">link</a>
           <h2 data-i18n="macros.title">Distribución de macros</h2>
           <p data-i18n="macros.desc">Calcula gramos de proteínas, grasas y carbohidratos.</p>
           <div class="calc">
@@ -314,7 +399,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="grasa minima saludable">
+        <div class="card" id="calc-fatmin" data-calc="fatmin" data-section="nutrition" data-search="grasa minima saludable">
+          <a class="calc-link" href="#calc:fatmin">link</a>
           <h2 data-i18n="fatmin.title">Grasa mínima saludable</h2>
           <p data-i18n="fatmin.desc">Recomendación mínima de grasa diaria para salud hormonal.</p>
           <div class="calc">
@@ -328,7 +414,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="agua diaria hidratacion">
+        <div class="card" id="calc-water" data-calc="water" data-section="nutrition" data-search="agua diaria hidratacion">
+          <a class="calc-link" href="#calc:water">link</a>
           <h2 data-i18n="water.title">Consumo de agua</h2>
           <p data-i18n="water.desc">Estimación rápida de agua diaria.</p>
           <div class="calc">
@@ -348,7 +435,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="fibra diaria">
+        <div class="card" id="calc-fiber" data-calc="fiber" data-section="nutrition" data-search="fibra diaria">
+          <a class="calc-link" href="#calc:fiber">link</a>
           <h2 data-i18n="fiber.title">Fibra recomendada</h2>
           <p data-i18n="fiber.desc">Estimación de fibra diaria según calorías.</p>
           <div class="calc">
@@ -362,7 +450,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="cafeina limite">
+        <div class="card" id="calc-caffeine" data-calc="caffeine" data-section="nutrition" data-search="cafeina limite">
+          <a class="calc-link" href="#calc:caffeine">link</a>
           <h2 data-i18n="caffeine.title">Límite de cafeína</h2>
           <p data-i18n="caffeine.desc">Calcula una ingesta máxima segura aproximada.</p>
           <div class="calc">
@@ -375,12 +464,41 @@
             </div>
           </div>
         </div>
+
+        <div class="card" data-search="calorias desde macros">
+          <h2 data-i18n="calfrommacros.title">Calorías desde macros</h2>
+          <p data-i18n="calfrommacros.desc">Convierte gramos de macros a calorías.</p>
+          <div class="calc">
+            <label data-i18n="label.protein">Proteína (g)</label>
+            <input id="calfrom_p" type="number" step="0.1" data-i18n-placeholder="ph.protein">
+            <label data-i18n="label.fat">Grasa (g)</label>
+            <input id="calfrom_f" type="number" step="0.1" data-i18n-placeholder="ph.fat">
+            <label data-i18n="label.carb">Carbohidratos (g)</label>
+            <input id="calfrom_c" type="number" step="0.1" data-i18n-placeholder="ph.carb">
+            <button class="calc-btn" onclick="calcCaloriesFromMacros()" data-i18n="btn.calculate">Calcular</button>
+            <div id="calfrom_result" class="result"></div>
+            <div class="info" data-i18n="calfrommacros.info">
+              Proteínas y carbohidratos aportan 4 kcal/g, grasas 9 kcal/g.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" data-search="keto macros cetogenica">
+          <h2 data-i18n="keto.title">Macros keto</h2>
+          <p data-i18n="keto.desc">Distribución cetogénica típica (70/20/10).</p>
+          <div class="calc">
+            <label data-i18n="label.tdee">Calorías diarias</label>
+            <input id="keto_cal" type="number" data-i18n-placeholder="ph.tdee">
+            <button class="calc-btn" onclick="calcKeto()" data-i18n="btn.calculate">Calcular</button>
+            <div id="keto_result" class="result"></div>
+            <div class="info" data-i18n="keto.info">
+              La dieta keto suele limitar carbohidratos a 20-50 g/día. Ajusta según respuesta.
+            </div>
+          </div>
+        </div>
       </div>
-    </section>
-    <section id="nutrition" class="page">
-      <h2 class="section-title" data-i18n="nutrition.title">Nutrición y energía</h2>
-      <div class="grid">
-        <div class="card" data-search="tdee calorias mantenimiento">
+        <div class="card" id="calc-tdee" data-calc="tdee" data-section="nutrition" data-search="tdee calorias mantenimiento">
+          <a class="calc-link" href="#calc:tdee">link</a>
           <h2 data-i18n="tdee.title">Calorías diarias (TDEE)</h2>
           <p data-i18n="tdee.desc">
             Estimación de calorías de mantenimiento usando Mifflin-St Jeor y nivel de actividad.
@@ -407,6 +525,7 @@
             </select>
             <button class="calc-btn" onclick="calcTDEE()" data-i18n="btn.calculate">Calcular</button>
             <div id="tdee_result" class="result"></div>
+            <div id="tdee_reco" class="info"></div>
             <div class="info" data-i18n="tdee.info">
               El TDEE es la energía total diaria. Úsalo para definir objetivos: déficit moderado para perder grasa o
               superávit ligero para ganar masa muscular de forma sostenible.
@@ -414,7 +533,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="bmr metabolismo basal">
+        <div class="card" id="calc-bmr" data-calc="bmr" data-section="nutrition" data-search="bmr metabolismo basal">
+          <a class="calc-link" href="#calc:bmr">link</a>
           <h2 data-i18n="bmr.title">Metabolismo basal (BMR)</h2>
           <p data-i18n="bmr.desc">Estimación de energía mínima para mantener funciones vitales en reposo.</p>
           <div class="calc">
@@ -438,7 +558,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="deficit calorico perder grasa">
+        <div class="card" id="calc-deficit" data-calc="deficit" data-section="nutrition" data-search="deficit calorico perder grasa">
+          <a class="calc-link" href="#calc:deficit">link</a>
           <h2 data-i18n="deficit.title">Déficit calórico recomendado</h2>
           <p data-i18n="deficit.desc">
             Calcula un déficit moderado para perder grasa manteniendo rendimiento.
@@ -461,7 +582,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="superavit calorico volumen">
+        <div class="card" id="calc-surplus" data-calc="surplus" data-section="nutrition" data-search="superavit calorico volumen">
+          <a class="calc-link" href="#calc:surplus">link</a>
           <h2 data-i18n="surplus.title">Superávit calórico recomendado</h2>
           <p data-i18n="surplus.desc">Calcula un superávit pequeño para ganar músculo con menos grasa.</p>
           <div class="calc">
@@ -485,7 +607,8 @@
     <section id="body" class="page">
       <h2 class="section-title" data-i18n="body.title">Composición corporal</h2>
       <div class="grid">
-        <div class="card" data-search="imc bmi">
+        <div class="card" id="calc-bmi" data-calc="bmi" data-section="body" data-search="imc bmi">
+          <a class="calc-link" href="#calc:bmi">link</a>
           <h2 data-i18n="bmi.title">Índice de masa corporal (IMC)</h2>
           <p data-i18n="bmi.desc">Relación peso/altura para una estimación general de estado ponderal.</p>
           <div class="calc">
@@ -495,13 +618,52 @@
             <input id="bmi_height" type="number" step="0.1" data-i18n-placeholder="ph.height">
             <button class="calc-btn" onclick="calcBMI()" data-i18n="btn.calculate">Calcular</button>
             <div id="bmi_result" class="result"></div>
+            <div id="bmi_reco" class="info"></div>
             <div class="info" data-i18n="bmi.info">
               El IMC es útil a nivel poblacional pero no distingue masa muscular. Úsalo junto a otras métricas.
             </div>
           </div>
         </div>
 
-        <div class="card" data-search="grasa corporal navy">
+        <div class="card" id="calc-bmiprime" data-calc="bmiprime" data-section="body" data-search="bmi prime">
+          <a class="calc-link" href="#calc:bmiprime">link</a>
+          <h2 data-i18n="bmiprime.title">BMI Prime</h2>
+          <p data-i18n="bmiprime.desc">Tu IMC dividido entre 25.</p>
+          <div class="calc">
+            <label data-i18n="label.bmi">IMC</label>
+            <input id="bmiprime_bmi" type="number" step="0.01" data-i18n-placeholder="ph.bmi">
+            <button class="calc-btn" onclick="calcBMIPrime()" data-i18n="btn.calculate">Calcular</button>
+            <div id="bmiprime_result" class="result"></div>
+            <div class="info" data-i18n="bmiprime.info">
+              BMI Prime > 1 indica un IMC por encima del umbral estándar de 25.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="calc-bfbmi" data-calc="bfbmi" data-section="body" data-search="grasa corporal bmi edad">
+          <a class="calc-link" href="#calc:bfbmi">link</a>
+          <h2 data-i18n="bfbmi.title">Grasa corporal (IMC+edad)</h2>
+          <p data-i18n="bfbmi.desc">Estimación con fórmula de Deurenberg.</p>
+          <div class="calc">
+            <label data-i18n="label.bmi">IMC</label>
+            <input id="bfbmi_bmi" type="number" step="0.01" data-i18n-placeholder="ph.bmi">
+            <label data-i18n="label.age">Edad</label>
+            <input id="bfbmi_age" type="number" data-i18n-placeholder="ph.age">
+            <label data-i18n="label.sex">Sexo</label>
+            <select id="bfbmi_sex">
+              <option value="1" data-i18n="opt.male">Hombre</option>
+              <option value="0" data-i18n="opt.female">Mujer</option>
+            </select>
+            <button class="calc-btn" onclick="calcBodyFatBMI()" data-i18n="btn.calculate">Calcular</button>
+            <div id="bfbmi_result" class="result"></div>
+            <div class="info" data-i18n="bfbmi.info">
+              Fórmula: %BF = 1.2*IMC + 0.23*edad - 10.8*sexo - 5.4.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="calc-bf" data-calc="bf" data-section="body" data-search="grasa corporal navy">
+          <a class="calc-link" href="#calc:bf">link</a>
           <h2 data-i18n="bf.title">Grasa corporal (US Navy)</h2>
           <p data-i18n="bf.desc">Estimación basada en perímetros corporales.</p>
           <div class="calc">
@@ -526,7 +688,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="masa magra lean mass">
+        <div class="card" id="calc-lbm" data-calc="lbm" data-section="body" data-search="masa magra lean mass">
+          <a class="calc-link" href="#calc:lbm">link</a>
           <h2 data-i18n="lbm.title">Masa magra</h2>
           <p data-i18n="lbm.desc">Calcula masa libre de grasa a partir de peso y % de grasa.</p>
           <div class="calc">
@@ -542,7 +705,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="ffmi limite natural">
+        <div class="card" id="calc-ffmi" data-calc="ffmi" data-section="body" data-search="ffmi limite natural">
+          <a class="calc-link" href="#calc:ffmi">link</a>
           <h2 data-i18n="ffmi.title">FFMI y potencial natural</h2>
           <p data-i18n="ffmi.desc">Índice de masa libre de grasa ajustado por altura.</p>
           <div class="calc">
@@ -561,7 +725,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="peso ideal devine">
+        <div class="card" id="calc-ideal" data-calc="ideal" data-section="body" data-search="peso ideal devine">
+          <a class="calc-link" href="#calc:ideal">link</a>
           <h2 data-i18n="ideal.title">Peso ideal (Devine)</h2>
           <p data-i18n="ideal.desc">Estimación clásica usada en clínica para adultos.</p>
           <div class="calc">
@@ -580,7 +745,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="cintura altura whtr">
+        <div class="card" id="calc-whtr" data-calc="whtr" data-section="body" data-search="cintura altura whtr">
+          <a class="calc-link" href="#calc:whtr">link</a>
           <h2 data-i18n="whtr.title">Ratio cintura/altura</h2>
           <p data-i18n="whtr.desc">Indicador simple de riesgo cardiometabólico.</p>
           <div class="calc">
@@ -596,7 +762,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="cintura cadera whr">
+        <div class="card" id="calc-whr" data-calc="whr" data-section="body" data-search="cintura cadera whr">
+          <a class="calc-link" href="#calc:whr">link</a>
           <h2 data-i18n="whr.title">Ratio cintura/cadera</h2>
           <p data-i18n="whr.desc">Medida de distribución de grasa.</p>
           <div class="calc">
@@ -612,7 +779,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="superficie corporal bsa">
+        <div class="card" id="calc-bsa" data-calc="bsa" data-section="body" data-search="superficie corporal bsa">
+          <a class="calc-link" href="#calc:bsa">link</a>
           <h2 data-i18n="bsa.title">Superficie corporal (BSA)</h2>
           <p data-i18n="bsa.desc">Usada en contextos clínicos y de dosificación.</p>
           <div class="calc">
@@ -628,7 +796,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="altura adulta genetica">
+        <div class="card" id="calc-height" data-calc="height" data-section="body" data-search="altura adulta genetica">
+          <a class="calc-link" href="#calc:height">link</a>
           <h2 data-i18n="height.title">Altura adulta estimada</h2>
           <p data-i18n="height.desc">Estimación basada en altura parental.</p>
           <div class="calc">
@@ -648,12 +817,58 @@
             </div>
           </div>
         </div>
+
+        <div class="card" id="calc-skinfold" data-calc="skinfold" data-section="body" data-search="pliegues cutaneos grasa corporal">
+          <a class="calc-link" href="#calc:skinfold">link</a>
+          <h2 data-i18n="skinfold.title">Grasa corporal por pliegues</h2>
+          <p data-i18n="skinfold.desc">Fórmula Jackson-Pollock de 3 pliegues.</p>
+          <div class="calc">
+            <label data-i18n="label.sex">Sexo</label>
+            <select id="skinfold_sex">
+              <option value="male" data-i18n="opt.male">Hombre</option>
+              <option value="female" data-i18n="opt.female">Mujer</option>
+            </select>
+            <label data-i18n="label.age">Edad</label>
+            <input id="skinfold_age" type="number" data-i18n-placeholder="ph.age">
+            <label data-i18n="label.chest">Pecho (mm)</label>
+            <input id="skinfold_chest" type="number" step="0.1" data-i18n-placeholder="ph.mm">
+            <label data-i18n="label.abdomen">Abdomen (mm)</label>
+            <input id="skinfold_abd" type="number" step="0.1" data-i18n-placeholder="ph.mm">
+            <label data-i18n="label.thigh">Muslo (mm)</label>
+            <input id="skinfold_thigh" type="number" step="0.1" data-i18n-placeholder="ph.mm">
+            <label data-i18n="label.triceps">Tríceps (mm)</label>
+            <input id="skinfold_tri" type="number" step="0.1" data-i18n-placeholder="ph.mm">
+            <label data-i18n="label.suprailiac">Suprailiaco (mm)</label>
+            <input id="skinfold_sup" type="number" step="0.1" data-i18n-placeholder="ph.mm">
+            <button class="calc-btn" onclick="calcSkinfold()" data-i18n="btn.calculate">Calcular</button>
+            <div id="skinfold_result" class="result"></div>
+            <div class="info" data-i18n="skinfold.info">
+              Introduce los 3 pliegues según sexo. La fórmula estima densidad corporal y % de grasa.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="calc-weighttrack" data-calc="weighttrack" data-section="body" data-search="seguimiento peso grafico">
+          <a class="calc-link" href="#calc:weighttrack">link</a>
+          <h2 data-i18n="weighttrack.title">Seguimiento de peso</h2>
+          <p data-i18n="weighttrack.desc">Guarda tu peso y visualiza la tendencia.</p>
+          <div class="calc">
+            <label data-i18n="label.weight">Peso (kg)</label>
+            <input id="weighttrack_value" type="number" step="0.1" data-i18n-placeholder="ph.weight">
+            <button class="calc-btn" onclick="addWeightPoint()" data-i18n="btn.addPoint">Añadir punto</button>
+            <canvas id="weightChart" width="320" height="160" style="width:100%;margin-top:10px;border-radius:10px;background:#0b1a33;"></canvas>
+            <div class="info" data-i18n="weighttrack.info">
+              Guarda 20 puntos como máximo. La tendencia es más importante que cambios diarios aislados.
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <section id="training" class="page">
       <h2 class="section-title" data-i18n="training.title">Entrenamiento de fuerza</h2>
       <div class="grid">
-        <div class="card" data-search="1rm repeticion maxima">
+        <div class="card" id="calc-1rm" data-calc="1rm" data-section="training" data-search="1rm repeticion maxima">
+          <a class="calc-link" href="#calc:1rm">link</a>
           <h2 data-i18n="rm.title">1RM (repetición máxima)</h2>
           <p data-i18n="rm.desc">Estimación de fuerza máxima con fórmula de Epley.</p>
           <div class="calc">
@@ -669,7 +884,25 @@
           </div>
         </div>
 
-        <div class="card" data-search="training max 90%">
+        <div class="card" id="calc-brzycki" data-calc="brzycki" data-section="training" data-search="1rm avanzado brzycki">
+          <a class="calc-link" href="#calc:brzycki">link</a>
+          <h2 data-i18n="brzycki.title">1RM avanzado (Brzycki)</h2>
+          <p data-i18n="brzycki.desc">Otra fórmula popular para estimar 1RM.</p>
+          <div class="calc">
+            <label data-i18n="label.weight">Peso (kg)</label>
+            <input id="brzycki_weight" type="number" step="0.1" data-i18n-placeholder="ph.weight">
+            <label data-i18n="label.reps">Repeticiones</label>
+            <input id="brzycki_reps" type="number" data-i18n-placeholder="ph.reps">
+            <button class="calc-btn" onclick="calcBrzycki()" data-i18n="btn.calculate">Calcular</button>
+            <div id="brzycki_result" class="result"></div>
+            <div class="info" data-i18n="brzycki.info">
+              Fórmula útil para rangos de 1 a 10 repeticiones. Compara con Epley.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="calc-tmax" data-calc="tmax" data-section="training" data-search="training max 90%">
+          <a class="calc-link" href="#calc:tmax">link</a>
           <h2 data-i18n="tmax.title">Training Max (90% 1RM)</h2>
           <p data-i18n="tmax.desc">Calcula un máximo de entrenamiento para programar con seguridad.</p>
           <div class="calc">
@@ -683,7 +916,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="volumen entrenamiento">
+        <div class="card" id="calc-volume" data-calc="volume" data-section="training" data-search="volumen entrenamiento">
+          <a class="calc-link" href="#calc:volume">link</a>
           <h2 data-i18n="volume.title">Volumen total (tonelaje)</h2>
           <p data-i18n="volume.desc">Calcula el volumen de una sesión o ejercicio.</p>
           <div class="calc">
@@ -701,7 +935,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="reps objetivo">
+        <div class="card" id="calc-repmax" data-calc="repmax" data-section="training" data-search="reps objetivo">
+          <a class="calc-link" href="#calc:repmax">link</a>
           <h2 data-i18n="repmax.title">Peso estimado para repeticiones</h2>
           <p data-i18n="repmax.desc">Calcula el peso para un número objetivo de repeticiones.</p>
           <div class="calc">
@@ -717,7 +952,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="descanso entre series">
+        <div class="card" id="calc-rest" data-calc="rest" data-section="training" data-search="descanso entre series">
+          <a class="calc-link" href="#calc:rest">link</a>
           <h2 data-i18n="rest.title">Descanso recomendado</h2>
           <p data-i18n="rest.desc">Calcula un descanso sugerido según objetivo.</p>
           <div class="calc">
@@ -735,7 +971,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="velocidad barra potencia">
+        <div class="card" id="calc-power" data-calc="power" data-section="training" data-search="velocidad barra potencia">
+          <a class="calc-link" href="#calc:power">link</a>
           <h2 data-i18n="power.title">Potencia aproximada</h2>
           <p data-i18n="power.desc">Estimación simple de potencia con peso y velocidad.</p>
           <div class="calc">
@@ -755,7 +992,8 @@
     <section id="cardio" class="page">
       <h2 class="section-title" data-i18n="cardio.title">Cardio y rendimiento</h2>
       <div class="grid">
-        <div class="card" data-search="frecuencia cardiaca maxima">
+        <div class="card" id="calc-hrmax" data-calc="hrmax" data-section="cardio" data-search="frecuencia cardiaca maxima">
+          <a class="calc-link" href="#calc:hrmax">link</a>
           <h2 data-i18n="hrmax.title">Frecuencia cardíaca máxima</h2>
           <p data-i18n="hrmax.desc">Estimación con fórmula de Tanaka (208 - 0.7 x edad).</p>
           <div class="calc">
@@ -769,7 +1007,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="zonas de frecuencia cardiaca">
+        <div class="card" id="calc-zones" data-calc="zones" data-section="cardio" data-search="zonas de frecuencia cardiaca">
+          <a class="calc-link" href="#calc:zones">link</a>
           <h2 data-i18n="zones.title">Zonas de entrenamiento</h2>
           <p data-i18n="zones.desc">Calcula zonas según tu FC máxima.</p>
           <div class="calc">
@@ -783,7 +1022,25 @@
           </div>
         </div>
 
-        <div class="card" data-search="vo2max cooper">
+        <div class="card" id="calc-karvonen" data-calc="karvonen" data-section="cardio" data-search="karvonen hrr zonas">
+          <a class="calc-link" href="#calc:karvonen">link</a>
+          <h2 data-i18n="karvonen.title">Zonas Karvonen (HRR)</h2>
+          <p data-i18n="karvonen.desc">Zonas basadas en frecuencia cardíaca en reposo.</p>
+          <div class="calc">
+            <label data-i18n="label.hrmax">FC máxima</label>
+            <input id="karvonen_hrmax" type="number" data-i18n-placeholder="ph.hrmax">
+            <label data-i18n="label.hrr">FC en reposo</label>
+            <input id="karvonen_rest" type="number" data-i18n-placeholder="ph.resthr">
+            <button class="calc-btn" onclick="calcKarvonen()" data-i18n="btn.calculate">Calcular</button>
+            <div id="karvonen_result" class="result"></div>
+            <div class="info" data-i18n="karvonen.info">
+              Karvonen usa la reserva cardíaca (HRR) para una prescripción más personalizada.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="calc-vo2" data-calc="vo2" data-section="cardio" data-search="vo2max cooper">
+          <a class="calc-link" href="#calc:vo2">link</a>
           <h2 data-i18n="vo2.title">VO2max (Cooper 12 min)</h2>
           <p data-i18n="vo2.desc">Estimación del consumo máximo de oxígeno.</p>
           <div class="calc">
@@ -797,7 +1054,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="ritmo running pace">
+        <div class="card" id="calc-pace" data-calc="pace" data-section="cardio" data-search="ritmo running pace">
+          <a class="calc-link" href="#calc:pace">link</a>
           <h2 data-i18n="pace.title">Ritmo de carrera</h2>
           <p data-i18n="pace.desc">Calcula ritmo por km o milla.</p>
           <div class="calc">
@@ -813,7 +1071,25 @@
           </div>
         </div>
 
-        <div class="card" data-search="prediccion carrera riegel">
+        <div class="card" id="calc-paceadv" data-calc="paceadv" data-section="cardio" data-search="ritmo avanzado running">
+          <a class="calc-link" href="#calc:paceadv">link</a>
+          <h2 data-i18n="paceadv.title">Ritmo avanzado</h2>
+          <p data-i18n="paceadv.desc">Calcula ritmo, velocidad y proyección 5K.</p>
+          <div class="calc">
+            <label data-i18n="label.distance">Distancia (km)</label>
+            <input id="paceadv_dist" type="number" step="0.01" data-i18n-placeholder="ph.distancekm">
+            <label data-i18n="label.time">Tiempo (min)</label>
+            <input id="paceadv_time" type="number" step="0.1" data-i18n-placeholder="ph.time">
+            <button class="calc-btn" onclick="calcPaceAdvanced()" data-i18n="btn.calculate">Calcular</button>
+            <div id="paceadv_result" class="result"></div>
+            <div class="info" data-i18n="paceadv.info">
+              Útil para planificar objetivos cortos y ajustar tus ritmos de entrenamiento.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="calc-race" data-calc="race" data-section="cardio" data-search="prediccion carrera riegel">
+          <a class="calc-link" href="#calc:race">link</a>
           <h2 data-i18n="race.title">Predicción de tiempo (Riegel)</h2>
           <p data-i18n="race.desc">Proyección de rendimiento en otra distancia.</p>
           <div class="calc">
@@ -831,7 +1107,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="pasos calorias">
+        <div class="card" id="calc-steps" data-calc="steps" data-section="cardio" data-search="pasos calorias">
+          <a class="calc-link" href="#calc:steps">link</a>
           <h2 data-i18n="steps.title">Pasos a calorías</h2>
           <p data-i18n="steps.desc">Estimación rápida del gasto por pasos diarios.</p>
           <div class="calc">
@@ -847,7 +1124,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="met calorias entrenamiento">
+        <div class="card" id="calc-met" data-calc="met" data-section="cardio" data-search="met calorias entrenamiento">
+          <a class="calc-link" href="#calc:met">link</a>
           <h2 data-i18n="met.title">Calorías por MET</h2>
           <p data-i18n="met.desc">Calcula gasto en función de METs, peso y tiempo.</p>
           <div class="calc">
@@ -865,7 +1143,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="caminar calorias">
+        <div class="card" id="calc-walk" data-calc="walk" data-section="cardio" data-search="caminar calorias">
+          <a class="calc-link" href="#calc:walk">link</a>
           <h2 data-i18n="walk.title">Calorías caminando</h2>
           <p data-i18n="walk.desc">Estimación por velocidad y tiempo.</p>
           <div class="calc">
@@ -887,7 +1166,8 @@
     <section id="recovery" class="page">
       <h2 class="section-title" data-i18n="recovery.title">Recuperación y salud</h2>
       <div class="grid">
-        <div class="card" data-search="sueno horas">
+        <div class="card" id="calc-sleep" data-calc="sleep" data-section="recovery" data-search="sueno horas">
+          <a class="calc-link" href="#calc:sleep">link</a>
           <h2 data-i18n="sleep.title">Horas de sueño recomendadas</h2>
           <p data-i18n="sleep.desc">Rango sugerido según edad.</p>
           <div class="calc">
@@ -901,7 +1181,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="stress recovery">
+        <div class="card" id="calc-stress" data-calc="stress" data-section="recovery" data-search="stress recovery">
+          <a class="calc-link" href="#calc:stress">link</a>
           <h2 data-i18n="stress.title">Indice de estrés percibido</h2>
           <p data-i18n="stress.desc">Autoevaluación rápida para ajustar carga de entrenamiento.</p>
           <div class="calc">
@@ -919,7 +1200,8 @@
     <section id="tools" class="page">
       <h2 class="section-title" data-i18n="tools.title">Herramientas útiles</h2>
       <div class="grid">
-        <div class="card" data-search="convertidor unidades">
+        <div class="card" id="calc-units" data-calc="units" data-section="tools" data-search="convertidor unidades">
+          <a class="calc-link" href="#calc:units">link</a>
           <h2 data-i18n="unit.title">Conversor de unidades</h2>
           <p data-i18n="unit.desc">Convierte kg/lb y cm/pulgadas.</p>
           <div class="calc">
@@ -939,7 +1221,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="placas barra olimpica">
+        <div class="card" id="calc-plates" data-calc="plates" data-section="tools" data-search="placas barra olimpica">
+          <a class="calc-link" href="#calc:plates">link</a>
           <h2 data-i18n="plates.title">Calculadora de discos</h2>
           <p data-i18n="plates.desc">Calcula discos por lado para una barra de 20 kg.</p>
           <div class="calc">
@@ -953,7 +1236,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="calorias por comida">
+        <div class="card" id="calc-meal" data-calc="meal" data-section="tools" data-search="calorias por comida">
+          <a class="calc-link" href="#calc:meal">link</a>
           <h2 data-i18n="meal.title">Calorías por comida</h2>
           <p data-i18n="meal.desc">Divide tus calorías en comidas diarias.</p>
           <div class="calc">
@@ -969,7 +1253,30 @@
           </div>
         </div>
 
-        <div class="card" data-search="proteina por comida">
+        <div class="card" id="calc-food" data-calc="food" data-section="tools" data-search="kcal por alimentos">
+          <a class="calc-link" href="#calc:food">link</a>
+          <h2 data-i18n="food.title">Calorías por alimento</h2>
+          <p data-i18n="food.desc">Calcula kcal por porción desde macros por 100 g.</p>
+          <div class="calc">
+            <label data-i18n="label.per100">Macros por 100 g</label>
+            <label data-i18n="label.protein">Proteína (g)</label>
+            <input id="food_p100" type="number" step="0.1" data-i18n-placeholder="ph.protein">
+            <label data-i18n="label.fat">Grasa (g)</label>
+            <input id="food_f100" type="number" step="0.1" data-i18n-placeholder="ph.fat">
+            <label data-i18n="label.carb">Carbohidratos (g)</label>
+            <input id="food_c100" type="number" step="0.1" data-i18n-placeholder="ph.carb">
+            <label data-i18n="label.serving">Tamaño de porción (g)</label>
+            <input id="food_serving" type="number" step="0.1" data-i18n-placeholder="ph.serving">
+            <button class="calc-btn" onclick="calcFood()" data-i18n="btn.calculate">Calcular</button>
+            <div id="food_result" class="result"></div>
+            <div class="info" data-i18n="food.info">
+              Útil para crear tu propia base de datos de alimentos sin apps externas.
+            </div>
+          </div>
+        </div>
+
+        <div class="card" id="calc-proteinmeal" data-calc="proteinmeal" data-section="tools" data-search="proteina por comida">
+          <a class="calc-link" href="#calc:proteinmeal">link</a>
           <h2 data-i18n="proteinmeal.title">Proteína por comida</h2>
           <p data-i18n="proteinmeal.desc">Distribuye tu proteína diaria entre comidas.</p>
           <div class="calc">
@@ -985,7 +1292,8 @@
           </div>
         </div>
 
-        <div class="card" data-search="creatina dosis diaria">
+        <div class="card" id="calc-creatine" data-calc="creatine" data-section="tools" data-search="creatina dosis diaria">
+          <a class="calc-link" href="#calc:creatine">link</a>
           <h2 data-i18n="creatine.title">Dosis diaria de creatina</h2>
           <p data-i18n="creatine.desc">Estimación común de suplementación diaria.</p>
           <div class="calc">
@@ -1040,6 +1348,14 @@
             Si tienes condiciones médicas, consulta con un profesional antes de hacer cambios drásticos.
           </p>
         </div>
+        <div class="card" id="edu-article-1">
+          <h2 data-i18n="edu.article1.title">Guía extensa: recomposición corporal</h2>
+          <div class="info" data-i18n="edu.loading">Cargando contenido...</div>
+        </div>
+        <div class="card" id="edu-article-2">
+          <h2 data-i18n="edu.article2.title">Guía extensa: nutrición práctica</h2>
+          <div class="info" data-i18n="edu.loading">Cargando contenido...</div>
+        </div>
       </div>
     </section>
 
@@ -1071,6 +1387,8 @@
         "home.history.title":"Historial reciente",
         "home.history.p1":"Guarda tus últimos cálculos en este navegador para comparar resultados y hacer seguimiento de tu progreso. El historial se guarda de forma local.",
         "history.empty":"No hay resultados aún.",
+        "home.profile.title":"Perfil rápido",
+        "home.profile.p1":"Guarda tu perfil para rellenar calculadoras automáticamente y comparar resultados con rapidez.",
         "nutrition.title":"Nutrición y energía",
         "body.title":"Composición corporal",
         "training.title":"Entrenamiento de fuerza",
@@ -1078,6 +1396,9 @@
         "recovery.title":"Recuperación y salud",
         "tools.title":"Herramientas útiles",
         "edu.title":"Guías educativas y consejos",
+        "edu.article1.title":"Guía extensa: recomposición corporal",
+        "edu.article2.title":"Guía extensa: nutrición práctica",
+        "edu.loading":"Cargando contenido...",
         "tdee.title":"Calorías diarias (TDEE)",
         "tdee.desc":"Estimación de calorías de mantenimiento usando Mifflin-St Jeor y nivel de actividad.",
         "tdee.info":"El TDEE es la energía total diaria. Úsalo para definir objetivos: déficit moderado para perder grasa o superávit ligero para ganar masa muscular de forma sostenible.",
@@ -1108,6 +1429,36 @@
         "caffeine.title":"Límite de cafeína",
         "caffeine.desc":"Calcula una ingesta máxima segura aproximada.",
         "caffeine.info":"Valores aproximados: hasta 3-6 mg/kg en adultos sanos. Si eres sensible reduce la dosis.",
+        "calfrommacros.title":"Calorías desde macros",
+        "calfrommacros.desc":"Convierte gramos de macros a calorías.",
+        "calfrommacros.info":"Proteínas y carbohidratos aportan 4 kcal/g, grasas 9 kcal/g.",
+        "keto.title":"Macros keto",
+        "keto.desc":"Distribución cetogénica típica (70/20/10).",
+        "keto.info":"La dieta keto suele limitar carbohidratos a 20-50 g/día. Ajusta según respuesta.",
+        "bmiprime.title":"BMI Prime",
+        "bmiprime.desc":"Tu IMC dividido entre 25.",
+        "bmiprime.info":"BMI Prime > 1 indica un IMC por encima del umbral estándar de 25.",
+        "bfbmi.title":"Grasa corporal (IMC+edad)",
+        "bfbmi.desc":"Estimación con fórmula de Deurenberg.",
+        "bfbmi.info":"Fórmula: %BF = 1.2*IMC + 0.23*edad - 10.8*sexo - 5.4.",
+        "karvonen.title":"Zonas Karvonen (HRR)",
+        "karvonen.desc":"Zonas basadas en frecuencia cardíaca en reposo.",
+        "karvonen.info":"Karvonen usa la reserva cardíaca (HRR) para una prescripción más personalizada.",
+        "weighttrack.title":"Seguimiento de peso",
+        "weighttrack.desc":"Guarda tu peso y visualiza la tendencia.",
+        "weighttrack.info":"Guarda 20 puntos como máximo. La tendencia es más importante que cambios diarios aislados.",
+        "skinfold.title":"Grasa corporal por pliegues",
+        "skinfold.desc":"Fórmula Jackson-Pollock de 3 pliegues.",
+        "skinfold.info":"Introduce los 3 pliegues según sexo. La fórmula estima densidad corporal y % de grasa.",
+        "brzycki.title":"1RM avanzado (Brzycki)",
+        "brzycki.desc":"Otra fórmula popular para estimar 1RM.",
+        "brzycki.info":"Fórmula útil para rangos de 1 a 10 repeticiones. Compara con Epley.",
+        "paceadv.title":"Ritmo avanzado",
+        "paceadv.desc":"Calcula ritmo, velocidad y proyección 5K.",
+        "paceadv.info":"Útil para planificar objetivos cortos y ajustar tus ritmos de entrenamiento.",
+        "food.title":"Calorías por alimento",
+        "food.desc":"Calcula kcal por porción desde macros por 100 g.",
+        "food.info":"Útil para crear tu propia base de datos de alimentos sin apps externas.",
         "bmi.title":"Índice de masa corporal (IMC)",
         "bmi.desc":"Relación peso/altura para una estimación general de estado ponderal.",
         "bmi.info":"El IMC es útil a nivel poblacional pero no distingue masa muscular. Úsalo junto a otras métricas.",
@@ -1220,6 +1571,17 @@
         "label.activity":"Actividad",
         "label.tdee":"TDEE (calorías)",
         "label.goal":"Objetivo",
+        "label.chest":"Pecho (mm)",
+        "label.abdomen":"Abdomen (mm)",
+        "label.thigh":"Muslo (mm)",
+        "label.triceps":"Tríceps (mm)",
+        "label.suprailiac":"Suprailiaco (mm)",
+        "label.serving":"Tamaño de porción (g)",
+        "label.per100":"Macros por 100 g",
+        "label.fat":"Grasa (g)",
+        "label.carb":"Carbohidratos (g)",
+        "label.bmi":"IMC",
+        "label.hrr":"FC en reposo",
         "label.bodyfat":"% Grasa corporal",
         "label.neck":"Cuello (cm)",
         "label.waist":"Cintura (cm)",
@@ -1265,6 +1627,11 @@
         "opt.rest.strength":"Fuerza (2-4 min)",
         "opt.rest.endurance":"Resistencia (30-60s)",
         "btn.calculate":"Calcular",
+        "btn.addPoint":"Añadir punto",
+        "btn.save":"Guardar perfil",
+        "btn.apply":"Aplicar perfil",
+        "btn.clearHistory":"Borrar historial",
+        "btn.theme":"Tema",
         "ph.weight":"Ej: 70",
         "ph.height":"Ej: 175",
         "ph.age":"Ej: 28",
@@ -1290,6 +1657,12 @@
         "ph.weightlb":"Ej: 154",
         "ph.heightin":"Ej: 68",
         "ph.meals":"Ej: 4",
+        "ph.fat":"Ej: 60",
+        "ph.carb":"Ej: 250",
+        "ph.bmi":"Ej: 23.5",
+        "ph.resthr":"Ej: 60",
+        "ph.mm":"Ej: 12",
+        "ph.serving":"Ej: 150",
         "ph.protein":"Ej: 140",
         "footer":"Este sitio es educativo y no sustituye asesoramiento médico profesional."
       },
@@ -1314,6 +1687,8 @@
         "home.history.title":"Recent history",
         "home.history.p1":"Save your latest results in this browser to compare changes over time. History is stored locally.",
         "history.empty":"No results yet.",
+        "home.profile.title":"Quick profile",
+        "home.profile.p1":"Save your profile to fill calculators faster and compare results easily.",
         "nutrition.title":"Nutrition and energy",
         "body.title":"Body composition",
         "training.title":"Strength training",
@@ -1321,6 +1696,9 @@
         "recovery.title":"Recovery and health",
         "tools.title":"Useful tools",
         "edu.title":"Guides and tips",
+        "edu.article1.title":"Long guide: body recomposition",
+        "edu.article2.title":"Long guide: practical nutrition",
+        "edu.loading":"Loading content...",
         "tdee.title":"Daily calories (TDEE)",
         "tdee.desc":"Maintenance calories estimate using Mifflin-St Jeor and activity level.",
         "tdee.info":"TDEE is total daily energy. Use it for goals: moderate deficit to lose fat or small surplus to gain muscle sustainably.",
@@ -1351,6 +1729,36 @@
         "caffeine.title":"Caffeine limit",
         "caffeine.desc":"Approximate safe daily caffeine limit.",
         "caffeine.info":"Approximate values: up to 3-6 mg/kg for healthy adults. Reduce if sensitive.",
+        "calfrommacros.title":"Calories from macros",
+        "calfrommacros.desc":"Convert macro grams into calories.",
+        "calfrommacros.info":"Protein and carbs provide 4 kcal/g, fat provides 9 kcal/g.",
+        "keto.title":"Keto macros",
+        "keto.desc":"Typical ketogenic split (70/20/10).",
+        "keto.info":"Keto often limits carbs to 20-50 g/day. Adjust by response.",
+        "bmiprime.title":"BMI Prime",
+        "bmiprime.desc":"Your BMI divided by 25.",
+        "bmiprime.info":"BMI Prime > 1 indicates BMI above the standard 25 threshold.",
+        "bfbmi.title":"Body fat (BMI+age)",
+        "bfbmi.desc":"Estimate using Deurenberg formula.",
+        "bfbmi.info":"Formula: %BF = 1.2*BMI + 0.23*age - 10.8*sex - 5.4.",
+        "karvonen.title":"Karvonen zones (HRR)",
+        "karvonen.desc":"Zones based on resting heart rate.",
+        "karvonen.info":"Karvonen uses heart rate reserve (HRR) for a more personalized prescription.",
+        "weighttrack.title":"Weight tracking",
+        "weighttrack.desc":"Save your weight and visualize the trend.",
+        "weighttrack.info":"Stores up to 20 points. Trend matters more than daily fluctuations.",
+        "skinfold.title":"Body fat by skinfolds",
+        "skinfold.desc":"Jackson-Pollock 3-site formula.",
+        "skinfold.info":"Enter the 3 skinfolds by sex. The formula estimates density and body fat %.",
+        "brzycki.title":"Advanced 1RM (Brzycki)",
+        "brzycki.desc":"Another popular 1RM estimation formula.",
+        "brzycki.info":"Useful for 1–10 reps. Compare with Epley for reference.",
+        "paceadv.title":"Advanced pace",
+        "paceadv.desc":"Compute pace, speed and 5K projection.",
+        "paceadv.info":"Useful to plan short goals and adjust training paces.",
+        "food.title":"Food calories",
+        "food.desc":"Compute kcal per serving from macros per 100 g.",
+        "food.info":"Useful to build your own food database without external apps.",
         "bmi.title":"Body mass index (BMI)",
         "bmi.desc":"Weight/height relation for a general weight status estimate.",
         "bmi.info":"BMI is useful at population level but does not distinguish muscle. Combine with other metrics.",
@@ -1463,6 +1871,17 @@
         "label.activity":"Activity",
         "label.tdee":"TDEE (calories)",
         "label.goal":"Goal",
+        "label.chest":"Chest (mm)",
+        "label.abdomen":"Abdomen (mm)",
+        "label.thigh":"Thigh (mm)",
+        "label.triceps":"Triceps (mm)",
+        "label.suprailiac":"Suprailiac (mm)",
+        "label.serving":"Serving size (g)",
+        "label.per100":"Macros per 100 g",
+        "label.fat":"Fat (g)",
+        "label.carb":"Carbs (g)",
+        "label.bmi":"BMI",
+        "label.hrr":"Resting HR",
         "label.bodyfat":"Body fat %",
         "label.neck":"Neck (cm)",
         "label.waist":"Waist (cm)",
@@ -1508,6 +1927,11 @@
         "opt.rest.strength":"Strength (2-4 min)",
         "opt.rest.endurance":"Endurance (30-60s)",
         "btn.calculate":"Calculate",
+        "btn.addPoint":"Add point",
+        "btn.save":"Save profile",
+        "btn.apply":"Apply profile",
+        "btn.clearHistory":"Clear history",
+        "btn.theme":"Theme",
         "ph.weight":"e.g. 70",
         "ph.height":"e.g. 175",
         "ph.age":"e.g. 28",
@@ -1533,6 +1957,12 @@
         "ph.weightlb":"e.g. 154",
         "ph.heightin":"e.g. 68",
         "ph.meals":"e.g. 4",
+        "ph.fat":"e.g. 60",
+        "ph.carb":"e.g. 250",
+        "ph.bmi":"e.g. 23.5",
+        "ph.resthr":"e.g. 60",
+        "ph.mm":"e.g. 12",
+        "ph.serving":"e.g. 150",
         "ph.protein":"e.g. 140",
         "footer":"This site is educational and does not replace professional medical advice."
       }
@@ -1540,6 +1970,9 @@
 
     const historyKey = "fitnesslab_history";
     let currentLang = "es";
+    const profileKey = "fitnesslab_profile";
+    const themeKey = "fitnesslab_theme";
+    let currentSection = "home";
 
     function getLang(){
       const stored = localStorage.getItem("lang");
@@ -1569,6 +2002,87 @@
       const trimmed = list.slice(0, 12);
       localStorage.setItem(historyKey, JSON.stringify(trimmed));
       renderHistory();
+    }
+
+    function clearHistory(){
+      localStorage.removeItem(historyKey);
+      renderHistory();
+    }
+
+    function saveProfile(){
+      const profile = {
+        weight: val("profile_weight"),
+        height: val("profile_height"),
+        age: val("profile_age"),
+        sex: document.getElementById("profile_sex").value,
+        activity: document.getElementById("profile_activity").value
+      };
+      localStorage.setItem(profileKey, JSON.stringify(profile));
+    }
+
+    function applyProfile(){
+      const raw = localStorage.getItem(profileKey);
+      if(!raw){ return; }
+      const p = JSON.parse(raw);
+      const map = [
+        ["tdee_weight","weight"],["tdee_height","height"],["tdee_age","age"],["tdee_sex","sex"],["tdee_activity","activity"],
+        ["bmr_weight","weight"],["bmr_height","height"],["bmr_age","age"],["bmr_sex","sex"],
+        ["bmi_weight","weight"],["bmi_height","height"],
+        ["water_weight","weight"],["protein_weight","weight"],
+        ["fatmin_weight","weight"]
+      ];
+      map.forEach(([id,key])=>{
+        const el = document.getElementById(id);
+        if(el && p[key] !== undefined && p[key] !== null){
+          el.value = p[key];
+        }
+      });
+    }
+
+    function loadProfileIntoForm(){
+      const raw = localStorage.getItem(profileKey);
+      if(!raw){ return; }
+      const p = JSON.parse(raw);
+      const set = (id, val)=>{
+        const el = document.getElementById(id);
+        if(el && val !== undefined && val !== null){ el.value = val; }
+      };
+      set("profile_weight", p.weight);
+      set("profile_height", p.height);
+      set("profile_age", p.age);
+      set("profile_sex", p.sex);
+      set("profile_activity", p.activity);
+    }
+
+    function applyTheme(theme){
+      document.documentElement.setAttribute("data-theme", theme);
+      localStorage.setItem(themeKey, theme);
+    }
+
+    function loadEducation(){
+      const a1 = document.getElementById("edu-article-1");
+      const a2 = document.getElementById("edu-article-2");
+      if(a1){
+        a1.innerHTML = `<h2 data-i18n="edu.article1.title">${I18N[currentLang]["edu.article1.title"] || ""}</h2>
+        <p>${getArticle("article1")}</p>`;
+      }
+      if(a2){
+        a2.innerHTML = `<h2 data-i18n="edu.article2.title">${I18N[currentLang]["edu.article2.title"] || ""}</h2>
+        <p>${getArticle("article2")}</p>`;
+      }
+    }
+
+    function getArticle(key){
+      const es = {
+        article1: "La recomposición corporal es el proceso de perder grasa y ganar músculo de manera simultánea. Aunque no siempre es rápida, es posible con una estrategia sólida. El primer pilar es el déficit leve o mantenimiento calórico: si reduces demasiado las calorías, el cuerpo tendrá dificultad para construir masa muscular. Un déficit suave del 10-15% suele ser suficiente para favorecer la pérdida de grasa sin comprometer el rendimiento. El segundo pilar es la proteína. Mantener entre 1.6 y 2.2 g/kg proporciona aminoácidos suficientes para reparar tejido muscular y mejorar la síntesis proteica. El tercer pilar es el entrenamiento de fuerza progresivo. Aumentar cargas, repeticiones o volumen de forma gradual genera el estímulo necesario para crecer. También es clave el descanso. Sin sueño suficiente el cuerpo no adapta y las hormonas que regulan apetito y recuperación se alteran. Para quienes comienzan a entrenar, la recomposición suele ser más rápida porque el cuerpo responde con facilidad. En personas entrenadas, el proceso es más lento y requiere más precisión. Medir la recomposición no solo depende del peso, sino de cambios en perímetros, fotos y rendimiento. Una estrategia práctica es seguir un registro semanal de peso, mantener la proteína alta, ajustar calorías según la tendencia y priorizar ejercicios multiarticulares. Por último, la adherencia es esencial: lo que se puede sostener en el tiempo es lo que transforma el cuerpo.",
+        article2: "La nutrición práctica no consiste en dietas perfectas, sino en hábitos sostenibles. Para la mayoría de personas activas, la base es consumir suficientes calorías para cubrir el gasto y elegir alimentos densos en nutrientes. Un buen sistema es dividir el plato en tres partes: una fuente de proteína magra, una porción de carbohidratos de calidad y grasas saludables en cantidades moderadas. Las verduras añaden volumen, micronutrientes y fibra. Si el objetivo es perder grasa, lo más importante es mantener un déficit sostenido, no eliminar grupos de alimentos. Para ganar músculo, el superávit debe ser pequeño; un exceso grande suele traducirse en grasa. La planificación semanal ayuda: cocinar en lote, tener snacks proteicos y medir porciones reduce la improvisación. La hidratación también cuenta: una deshidratación leve reduce el rendimiento. Para la mayoría, 30-40 ml por kg de peso al día es un buen punto de partida. Los suplementos pueden ser útiles, pero no sustituyen una dieta correcta. Creatina, cafeína y proteína en polvo son los más respaldados. En cambio, la mayoría de productos milagro no ofrecen beneficios reales. En resumen, la nutrición efectiva es simple: controla las calorías, prioriza proteína, ajusta carbohidratos según actividad y cuida el descanso."
+      };
+      const en = {
+        article1: "Body recomposition is the process of losing fat while gaining muscle at the same time. It is possible, but it requires a solid strategy. The first pillar is a mild deficit or maintenance calories: if you cut too hard, muscle growth becomes difficult. A small 10–15% deficit often works well. The second pillar is protein. Staying around 1.6–2.2 g/kg provides enough amino acids for repair and growth. The third pillar is progressive strength training. Gradual increases in load, reps, or volume create the stimulus needed to build muscle. Recovery is just as important: poor sleep reduces adaptation and disrupts hormones. Beginners tend to recomposition faster because their bodies respond quickly. More advanced trainees may see slower changes and need precise adjustments. Tracking recomposition goes beyond scale weight: measurements, photos, and performance changes matter. A practical system is weekly weigh-ins, high protein, modest calorie adjustments based on trends, and emphasis on compound lifts. Consistency is the real driver—sustainable habits lead to long-term change.",
+        article2: "Practical nutrition is not about perfect diets; it is about sustainable habits. For most active people, the base is enough calories to fuel training and foods that deliver nutrients. A good plate structure is simple: lean protein, quality carbohydrates, and moderate healthy fats. Vegetables add volume, fiber, and micronutrients. For fat loss, the key is a consistent deficit, not extreme restrictions. For muscle gain, the surplus should be small; large surpluses add unnecessary fat. Weekly planning helps: batch cooking, protein-rich snacks, and portion awareness reduce impulse choices. Hydration matters too—mild dehydration can lower performance. A reasonable starting point is 30–40 ml per kg of body weight daily. Supplements can help, but they do not replace solid food. Creatine, caffeine, and protein powder are the most supported options. In summary: control calories, prioritize protein, adjust carbs to activity, and protect sleep."
+      };
+      const pack = currentLang === "es" ? es : en;
+      return pack[key] || "";
     }
 
     function renderHistory(){
@@ -1606,6 +2120,12 @@
       const tdee = bmr * act;
       const res = Math.round(tdee) + " kcal";
       show("tdee_result", res);
+      const deficit = Math.round(tdee * 0.8);
+      const surplus = Math.round(tdee * 1.1);
+      const reco = currentLang === "es"
+        ? "Déficit sugerido: " + deficit + " kcal | Superávit sugerido: " + surplus + " kcal"
+        : "Suggested deficit: " + deficit + " kcal | Suggested surplus: " + surplus + " kcal";
+      show("tdee_reco", reco);
       addHistory("TDEE", res);
     }
 
@@ -1713,6 +2233,20 @@
       const bmi = (w / (h*h)).toFixed(2);
       const res = "IMC: " + bmi;
       show("bmi_result", res);
+      const b = parseFloat(bmi);
+      let msg = "";
+      if(currentLang === "es"){
+        msg = b < 18.5 ? "Bajo peso: prioriza fuerza y proteína." :
+              b < 25 ? "Rango saludable: mantén hábitos consistentes." :
+              b < 30 ? "Sobrepeso: un déficit leve puede ayudar." :
+              "Obesidad: consulta a un profesional de salud.";
+      } else {
+        msg = b < 18.5 ? "Underweight: prioritize strength and protein." :
+              b < 25 ? "Healthy range: keep consistent habits." :
+              b < 30 ? "Overweight: a mild deficit may help." :
+              "Obesity: consult a health professional.";
+      }
+      show("bmi_reco", msg);
       addHistory("IMC", bmi);
     }
 
@@ -2016,6 +2550,160 @@
       addHistory("Calorías por comida", res);
     }
 
+    function calcSkinfold(){
+      const sex = document.getElementById("skinfold_sex").value;
+      const age = val("skinfold_age");
+      const chest = val("skinfold_chest");
+      const abd = val("skinfold_abd");
+      const thigh = val("skinfold_thigh");
+      const tri = val("skinfold_tri");
+      const sup = val("skinfold_sup");
+      if(!age){ return show("skinfold_result",""); }
+      let sum = 0;
+      if(sex === "male"){
+        if(!chest || !abd || !thigh){ return show("skinfold_result",""); }
+        sum = chest + abd + thigh;
+        const density = 1.10938 - 0.0008267*sum + 0.0000016*sum*sum - 0.0002574*age;
+        const bf = (495 / density - 450).toFixed(1);
+        show("skinfold_result", bf + " %");
+        addHistory("Pliegues", bf + " %");
+      } else {
+        if(!tri || !sup || !thigh){ return show("skinfold_result",""); }
+        sum = tri + sup + thigh;
+        const density = 1.0994921 - 0.0009929*sum + 0.0000023*sum*sum - 0.0001392*age;
+        const bf = (495 / density - 450).toFixed(1);
+        show("skinfold_result", bf + " %");
+        addHistory("Pliegues", bf + " %");
+      }
+    }
+
+    function calcBrzycki(){
+      const w = val("brzycki_weight");
+      const reps = val("brzycki_reps");
+      if(!w || !reps){ return show("brzycki_result",""); }
+      const rm = (w / (1.0278 - 0.0278*reps)).toFixed(1);
+      show("brzycki_result", rm + " kg");
+      addHistory("1RM Brzycki", rm + " kg");
+    }
+
+    function calcPaceAdvanced(){
+      const dist = val("paceadv_dist");
+      const time = val("paceadv_time");
+      if(!dist || !time){ return show("paceadv_result",""); }
+      const pace = time / dist;
+      const speed = (dist / (time/60)).toFixed(2);
+      const min = Math.floor(pace);
+      const sec = Math.round((pace - min) * 60);
+      const paceStr = min + ":" + String(sec).padStart(2,"0");
+      const pred5k = (time * Math.pow(5/dist, 1.06)).toFixed(1);
+      const res = "Ritmo " + paceStr + " min/km | Velocidad " + speed + " km/h | 5K " + pred5k + " min";
+      show("paceadv_result", res);
+      addHistory("Ritmo avanzado", res);
+    }
+
+    function calcFood(){
+      const p = val("food_p100") || 0;
+      const f = val("food_f100") || 0;
+      const c = val("food_c100") || 0;
+      const serving = val("food_serving");
+      if(!serving){ return show("food_result",""); }
+      const factor = serving / 100;
+      const cal = Math.round(((p*4) + (f*9) + (c*4)) * factor);
+      const res = cal + " kcal";
+      show("food_result", res);
+      addHistory("Kcal alimento", res);
+    }
+
+    function calcCaloriesFromMacros(){
+      const p = val("calfrom_p") || 0;
+      const f = val("calfrom_f") || 0;
+      const c = val("calfrom_c") || 0;
+      const cal = Math.round((p*4) + (f*9) + (c*4));
+      const res = cal + " kcal";
+      show("calfrom_result", res);
+      addHistory("Calorías macros", res);
+    }
+
+    function calcKeto(){
+      const cal = val("keto_cal");
+      if(!cal){ return show("keto_result",""); }
+      const p = Math.round((cal*0.20)/4);
+      const f = Math.round((cal*0.70)/9);
+      const c = Math.round((cal*0.10)/4);
+      const res = "P: " + p + " g | G: " + f + " g | C: " + c + " g";
+      show("keto_result", res);
+      addHistory("Macros keto", res);
+    }
+
+    function calcBMIPrime(){
+      const bmi = val("bmiprime_bmi");
+      if(!bmi){ return show("bmiprime_result",""); }
+      const prime = (bmi / 25).toFixed(2);
+      show("bmiprime_result", prime);
+      addHistory("BMI Prime", prime);
+    }
+
+    function calcBodyFatBMI(){
+      const bmi = val("bfbmi_bmi");
+      const age = val("bfbmi_age");
+      const sex = parseFloat(document.getElementById("bfbmi_sex").value);
+      if(!bmi || !age){ return show("bfbmi_result",""); }
+      const bf = (1.2*bmi + 0.23*age - 10.8*sex - 5.4).toFixed(1);
+      const res = bf + " %";
+      show("bfbmi_result", res);
+      addHistory("Grasa IMC", res);
+    }
+
+    function calcKarvonen(){
+      const hrmax = val("karvonen_hrmax");
+      const rest = val("karvonen_rest");
+      if(!hrmax || !rest){ return show("karvonen_result",""); }
+      const hrr = hrmax - rest;
+      const z1 = Math.round(rest + hrr*0.6);
+      const z2 = Math.round(rest + hrr*0.7);
+      const z3 = Math.round(rest + hrr*0.8);
+      const z4 = Math.round(rest + hrr*0.9);
+      const res = "Z1 " + z1 + " | Z2 " + z2 + " | Z3 " + z3 + " | Z4 " + z4;
+      show("karvonen_result", res);
+      addHistory("Karvonen", res);
+    }
+
+    const weightKey = "fitnesslab_weight";
+    function addWeightPoint(){
+      const w = val("weighttrack_value");
+      if(!w){ return; }
+      const list = JSON.parse(localStorage.getItem(weightKey) || "[]");
+      list.unshift({ value: w, time: Date.now() });
+      const trimmed = list.slice(0, 20);
+      localStorage.setItem(weightKey, JSON.stringify(trimmed));
+      drawWeightChart();
+      addHistory("Peso", w.toFixed(1) + " kg");
+    }
+
+    function drawWeightChart(){
+      const canvas = document.getElementById("weightChart");
+      if(!canvas){ return; }
+      const ctx = canvas.getContext("2d");
+      const list = JSON.parse(localStorage.getItem(weightKey) || "[]").slice().reverse();
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      ctx.fillStyle = "#0b1a33";
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+      if(list.length === 0){ return; }
+      const values = list.map(p=>p.value);
+      const min = Math.min(...values) - 1;
+      const max = Math.max(...values) + 1;
+      const w = canvas.width, h = canvas.height;
+      ctx.strokeStyle = "#22c55e";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      list.forEach((p,i)=>{
+        const x = (i/(list.length-1 || 1)) * (w-20) + 10;
+        const y = h - ((p.value - min)/(max - min)) * (h-20) - 10;
+        if(i===0){ ctx.moveTo(x,y); } else { ctx.lineTo(x,y); }
+      });
+      ctx.stroke();
+    }
+
     function calcProteinMeal(){
       const total = val("proteinmeal_total");
       const meals = val("proteinmeal_meals");
@@ -2035,15 +2723,43 @@
       addHistory("Creatina", res);
     }
 
+    function showPage(target){
+      const buttons = document.querySelectorAll("nav.menu button");
+      buttons.forEach(b=>b.classList.remove("active"));
+      buttons.forEach(b=>{
+        if(b.getAttribute("data-target") === target){ b.classList.add("active"); }
+      });
+      document.querySelectorAll(".page").forEach(p=>p.style.display="none");
+      const page = document.getElementById(target) || document.getElementById("home");
+      if(page){ page.style.display = "block"; }
+      currentSection = page ? page.id : "home";
+    }
+
+    function handleHash(){
+      const hash = window.location.hash.replace("#","").trim();
+      if(!hash){ return; }
+      if(hash.startsWith("calc:")){
+        const calcId = hash.replace("calc:","");
+        const card = document.querySelector(`[data-calc="${calcId}"]`);
+        if(card){
+          const section = card.getAttribute("data-section") || "home";
+          showPage(section);
+          if(section === "education"){ loadEducation(); }
+          setTimeout(()=>{ card.scrollIntoView({ behavior:"smooth", block:"start" }); }, 50);
+        }
+        return;
+      }
+      showPage(hash);
+      if(hash === "education"){ loadEducation(); }
+    }
+
     function setupMenu(){
       const buttons = document.querySelectorAll("nav.menu button");
       buttons.forEach(btn=>{
         btn.addEventListener("click", ()=>{
-          buttons.forEach(b=>b.classList.remove("active"));
-          btn.classList.add("active");
           const target = btn.getAttribute("data-target");
-          document.querySelectorAll(".page").forEach(p=>p.style.display="none");
-          document.getElementById(target).style.display = "block";
+          window.location.hash = target;
+          showPage(target);
         });
       });
     }
@@ -2060,6 +2776,13 @@
             card.style.display = "none";
           }
         });
+        if(q){
+          document.querySelectorAll(".page").forEach(p=>p.style.display="block");
+          const first = document.querySelector('.card[style=""]') || document.querySelector(".card");
+          if(first){ first.scrollIntoView({ behavior:"smooth", block:"start" }); }
+        } else {
+          showPage(currentSection);
+        }
       });
     }
 
@@ -2069,10 +2792,21 @@
       setupMenu();
       setupSearch();
       renderHistory();
+      loadProfileIntoForm();
+      drawWeightChart();
+      const savedTheme = localStorage.getItem(themeKey) || "light";
+      applyTheme(savedTheme);
+      handleHash();
+      const themeBtn = document.getElementById("themeToggle");
+      themeBtn.addEventListener("click", ()=>{
+        const current = document.documentElement.getAttribute("data-theme") || "light";
+        applyTheme(current === "dark" ? "light" : "dark");
+      });
       document.getElementById("langSelect").addEventListener("change", (e)=>{
         const l = e.target.value;
         localStorage.setItem("lang", l);
         applyLang(l);
+        loadEducation();
       });
     });
   </script>
