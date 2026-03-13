@@ -39,7 +39,7 @@
     .wrap{
       max-width:1200px;
       margin:0 auto;
-      padding:20px;
+      padding:48px 32px 56px 32px;
     }
     header.hero{
       background:linear-gradient(135deg,var(--brand),var(--brand-2));
@@ -56,9 +56,9 @@
       flex-wrap:wrap;
     }
     .logo{
-      font-weight:700;
-      letter-spacing:0.5px;
-      font-size:18px;
+      font-weight:800;
+      letter-spacing:0.6px;
+      font-size:34px;
     }
     .controls{
       display:flex;
@@ -113,32 +113,27 @@
     }
     .page{
       display:none;
-      margin-top:22px;
+      margin-top:26px;
+      padding:0 16px;
     }
     .grid{
       display:grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap:18px;
+      gap:24px;
+      margin:10px 0 24px 0;
+      padding:0 8px;
     }
     .card{
       background:var(--card);
       border-radius:var(--radius);
       box-shadow:var(--shadow);
-      padding:18px;
+      padding:22px;
       position:relative;
     }
     .card h2{ margin:0 0 8px 0; }
-    .calc-link{
-      position:absolute;
-      top:14px;
-      right:14px;
-      text-decoration:none;
-      font-weight:700;
-      font-size:12px;
-      color:var(--brand-2);
-      background:#eef2ff;
-      padding:4px 8px;
-      border-radius:999px;
+    .calc-link{ display:none; }
+    .card, .card p, .info, .result{
+      text-align:left;
     }
     .card p{
       color:var(--ink-soft);
@@ -252,12 +247,35 @@
       color:#1f2a44;
     }
     .section-title{
-      margin:0 0 14px 0;
-      font-size:20px;
+      margin:4px 0 16px 0;
+      font-size:22px;
+      padding-left:4px;
+    }
+    .toast{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      background:#111b2e;
+      color:#fff;
+      padding:12px 14px;
+      border-radius:10px;
+      font-size:13px;
+      box-shadow:var(--shadow);
+      opacity:0;
+      transform:translateY(6px);
+      transition:all .25s ease;
+      z-index:9999;
+    }
+    .toast.show{
+      opacity:1;
+      transform:translateY(0);
     }
     @media (max-width:720px){
+      .wrap{ padding:36px 18px 44px 18px; }
       .search{ min-width:160px; }
-      h1{ font-size:24px; }
+      h1{ font-size:26px; }
+      .logo{ font-size:26px; }
+      .page{ padding:0 6px; }
     }
   </style>
 </head>
@@ -319,10 +337,23 @@
           <ul id="historyList" class="history"></ul>
         </div>
         <div class="card">
+          <h2 data-i18n="home.ideas.title">Ideas rápidas para mejorar</h2>
+          <p data-i18n="home.ideas.p1">
+            Añade nuevas secciones, comparte resultados y crea artículos largos para mejorar el SEO.
+          </p>
+          <div class="info" data-i18n="home.ideas.list">
+            - Crea una guía por calculadora. - Añade ejemplos de uso. - Comparte en redes. - Añade un blog semanal.
+          </div>
+        </div>
+        <div class="card">
           <h2 data-i18n="home.profile.title">Perfil rápido</h2>
           <p data-i18n="home.profile.p1">
             Guarda tu perfil para rellenar calculadoras automáticamente y comparar resultados con rapidez.
           </p>
+          <div class="info" data-i18n="home.profile.help">
+            Guardar perfil: almacena tu peso, altura, edad y actividad. Aplicar perfil: rellena automáticamente
+            las calculadoras principales (TDEE, BMR, IMC, agua, proteína, grasa mínima).
+          </div>
           <div class="calc">
             <label data-i18n="label.weight">Peso (kg)</label>
             <input id="profile_weight" type="number" step="0.1" data-i18n-placeholder="ph.weight">
@@ -525,7 +556,6 @@
             </select>
             <button class="calc-btn" onclick="calcTDEE()" data-i18n="btn.calculate">Calcular</button>
             <div id="tdee_result" class="result"></div>
-            <div id="tdee_reco" class="info"></div>
             <div class="info" data-i18n="tdee.info">
               El TDEE es la energía total diaria. Úsalo para definir objetivos: déficit moderado para perder grasa o
               superávit ligero para ganar masa muscular de forma sostenible.
@@ -618,7 +648,6 @@
             <input id="bmi_height" type="number" step="0.1" data-i18n-placeholder="ph.height">
             <button class="calc-btn" onclick="calcBMI()" data-i18n="btn.calculate">Calcular</button>
             <div id="bmi_result" class="result"></div>
-            <div id="bmi_reco" class="info"></div>
             <div class="info" data-i18n="bmi.info">
               El IMC es útil a nivel poblacional pero no distingue masa muscular. Úsalo junto a otras métricas.
             </div>
@@ -1364,6 +1393,8 @@
     </div>
   </div>
 
+  <div id="toast" class="toast"></div>
+
   <script>
     const I18N = {
       es: {
@@ -1389,6 +1420,10 @@
         "history.empty":"No hay resultados aún.",
         "home.profile.title":"Perfil rápido",
         "home.profile.p1":"Guarda tu perfil para rellenar calculadoras automáticamente y comparar resultados con rapidez.",
+        "home.profile.help":"Guardar perfil: almacena tu peso, altura, edad y actividad. Aplicar perfil: rellena automáticamente las calculadoras principales (TDEE, BMR, IMC, agua, proteína, grasa mínima).",
+        "home.ideas.title":"Ideas rápidas para mejorar",
+        "home.ideas.p1":"Añade nuevas secciones, comparte resultados y crea artículos largos para mejorar el SEO.",
+        "home.ideas.list":"- Crea una guía por calculadora. - Añade ejemplos de uso. - Comparte en redes. - Añade un blog semanal.",
         "nutrition.title":"Nutrición y energía",
         "body.title":"Composición corporal",
         "training.title":"Entrenamiento de fuerza",
@@ -1689,6 +1724,10 @@
         "history.empty":"No results yet.",
         "home.profile.title":"Quick profile",
         "home.profile.p1":"Save your profile to fill calculators faster and compare results easily.",
+        "home.profile.help":"Save profile stores your weight, height, age and activity. Apply profile fills key calculators (TDEE, BMR, BMI, water, protein, fat minimum).",
+        "home.ideas.title":"Quick ideas to improve",
+        "home.ideas.p1":"Add new sections, share results and write long articles to improve SEO.",
+        "home.ideas.list":"- Create a guide per calculator. - Add usage examples. - Share on social. - Post weekly.",
         "nutrition.title":"Nutrition and energy",
         "body.title":"Body composition",
         "training.title":"Strength training",
@@ -2007,6 +2046,7 @@
     function clearHistory(){
       localStorage.removeItem(historyKey);
       renderHistory();
+      toast(currentLang === "es" ? "Historial borrado" : "History cleared");
     }
 
     function saveProfile(){
@@ -2018,11 +2058,15 @@
         activity: document.getElementById("profile_activity").value
       };
       localStorage.setItem(profileKey, JSON.stringify(profile));
+      toast(currentLang === "es" ? "Perfil guardado" : "Profile saved");
     }
 
     function applyProfile(){
       const raw = localStorage.getItem(profileKey);
-      if(!raw){ return; }
+      if(!raw){
+        toast(currentLang === "es" ? "Primero guarda tu perfil" : "Save your profile first");
+        return;
+      }
       const p = JSON.parse(raw);
       const map = [
         ["tdee_weight","weight"],["tdee_height","height"],["tdee_age","age"],["tdee_sex","sex"],["tdee_activity","activity"],
@@ -2037,6 +2081,7 @@
           el.value = p[key];
         }
       });
+      toast(currentLang === "es" ? "Perfil aplicado" : "Profile applied");
     }
 
     function loadProfileIntoForm(){
@@ -2058,6 +2103,16 @@
       document.documentElement.setAttribute("data-theme", theme);
       localStorage.setItem(themeKey, theme);
     }
+
+    function toast(message){
+      const el = document.getElementById("toast");
+      if(!el){ return; }
+      el.textContent = message;
+      el.classList.add("show");
+      setTimeout(()=>{ el.classList.remove("show"); }, 2200);
+    }
+
+    // calc-link feature removed by request
 
     function loadEducation(){
       const a1 = document.getElementById("edu-article-1");
@@ -2118,15 +2173,13 @@
       if(!w || !h || !a){ return show("tdee_result",""); }
       const bmr = (10*w) + (6.25*h) - (5*a) + sex;
       const tdee = bmr * act;
-      const res = Math.round(tdee) + " kcal";
-      show("tdee_result", res);
       const deficit = Math.round(tdee * 0.8);
       const surplus = Math.round(tdee * 1.1);
-      const reco = currentLang === "es"
-        ? "Déficit sugerido: " + deficit + " kcal | Superávit sugerido: " + surplus + " kcal"
-        : "Suggested deficit: " + deficit + " kcal | Suggested surplus: " + surplus + " kcal";
-      show("tdee_reco", reco);
-      addHistory("TDEE", res);
+      const res = currentLang === "es"
+        ? Math.round(tdee) + " kcal | Déficit: " + deficit + " | Superávit: " + surplus
+        : Math.round(tdee) + " kcal | Deficit: " + deficit + " | Surplus: " + surplus;
+      show("tdee_result", res);
+      addHistory("TDEE", Math.round(tdee) + " kcal");
     }
 
     function calcBMR(){
@@ -2231,22 +2284,19 @@
       const h = val("bmi_height") / 100;
       if(!w || !h){ return show("bmi_result",""); }
       const bmi = (w / (h*h)).toFixed(2);
-      const res = "IMC: " + bmi;
-      show("bmi_result", res);
       const b = parseFloat(bmi);
       let msg = "";
       if(currentLang === "es"){
-        msg = b < 18.5 ? "Bajo peso: prioriza fuerza y proteína." :
-              b < 25 ? "Rango saludable: mantén hábitos consistentes." :
-              b < 30 ? "Sobrepeso: un déficit leve puede ayudar." :
-              "Obesidad: consulta a un profesional de salud.";
+        msg = b < 18.5 ? "Bajo peso" :
+              b < 25 ? "Rango saludable" :
+              b < 30 ? "Sobrepeso" : "Obesidad";
       } else {
-        msg = b < 18.5 ? "Underweight: prioritize strength and protein." :
-              b < 25 ? "Healthy range: keep consistent habits." :
-              b < 30 ? "Overweight: a mild deficit may help." :
-              "Obesity: consult a health professional.";
+        msg = b < 18.5 ? "Underweight" :
+              b < 25 ? "Healthy range" :
+              b < 30 ? "Overweight" : "Obesity";
       }
-      show("bmi_reco", msg);
+      const res = (currentLang === "es" ? "IMC: " : "BMI: ") + bmi + " | " + msg;
+      show("bmi_result", res);
       addHistory("IMC", bmi);
     }
 
@@ -2794,6 +2844,7 @@
       renderHistory();
       loadProfileIntoForm();
       drawWeightChart();
+      loadEducation();
       const savedTheme = localStorage.getItem(themeKey) || "light";
       applyTheme(savedTheme);
       handleHash();
@@ -2808,6 +2859,7 @@
         applyLang(l);
         loadEducation();
       });
+      window.addEventListener("hashchange", handleHash);
     });
   </script>
 </body>
