@@ -1574,7 +1574,10 @@ function showPage(target, scroll = true){
 
 function handleHash(){
   const hash = window.location.hash.replace("#","").trim();
-  if(!hash){ return; }
+  if(!hash){
+    showPage("home");
+    return;
+  }
   if(hash.startsWith("calc:")){
     const calcId = hash.replace("calc:","");
     const card = document.querySelector(`[data-calc="${calcId}"]`);
@@ -1623,22 +1626,22 @@ function handleHash(){
       });
     }
 
-    document.addEventListener("DOMContentLoaded", ()=>{
-      const lang = getLang();
-      applyLang(lang);
-      initCookieBanner();
-      setupMenu();
-      setupSearch();
-      renderHistory();
-      loadProfileIntoForm();
-      loadGoal();
-      drawWeightChart();
-      drawCalorieChart();
-      loadEducation();
-      const savedTheme = localStorage.getItem(themeKey) || "light";
-      applyTheme(savedTheme);
-      handleHash();
-      const themeBtn = document.getElementById("themeToggle");
+document.addEventListener("DOMContentLoaded", ()=>{
+  const lang = getLang();
+  applyLang(lang);
+  initCookieBanner();
+  setupMenu();
+  setupSearch();
+  renderHistory();
+  loadProfileIntoForm();
+  loadGoal();
+  drawWeightChart();
+  drawCalorieChart();
+  loadEducation();
+  const savedTheme = localStorage.getItem(themeKey) || "light";
+  applyTheme(savedTheme);
+  handleHash();
+  const themeBtn = document.getElementById("themeToggle");
       themeBtn.addEventListener("click", ()=>{
         const current = document.documentElement.getAttribute("data-theme") || "light";
         applyTheme(current === "dark" ? "light" : "dark");
